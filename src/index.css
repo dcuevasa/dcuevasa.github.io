@@ -11,3 +11,65 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Agregar estos estilos a src/index.css */
+.carousel {
+    margin-top: -3rem;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.carousel-item img {
+    filter: brightness(0.8);
+}
+
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 300px !important;
+    }
+}
+
+/* Agregar a src/index.css */
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+    margin: 10px;
+}
+
+.tech-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    transition: transform 0.2s;
+}
+
+.tech-icon:hover {
+    transform: scale(1.1);
+}
+
+.tech-name {
+    font-size: 0.9rem;
+    margin-top: 8px;
+    text-align: center;
+    color: #666;
+}
+
+.gap-4 {
+    gap: 1.5rem;
+}
+
+.tech-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.gap-3 {
+    gap: 1rem;
+}
