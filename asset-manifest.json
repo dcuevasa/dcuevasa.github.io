@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.aafb938e.css",
-    "main.js": "/static/js/main.157ca0ff.js",
+    "main.js": "/static/js/main.d214caf3.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
     "static/media/SinfonIA-Sabana.jpeg": "/static/media/SinfonIA-Sabana.eaa493729b1ae3ae0231.jpeg",
@@ -12,16 +12,17 @@
     "static/media/RosMeetup-Me.jpeg": "/static/media/RosMeetup-Me.a606e3274a988dcc8964.jpeg",
     "static/media/Foto-SocialHub-Robocup2024.jpeg": "/static/media/Foto-SocialHub-Robocup2024.fa83ea2251fb88e02937.jpeg",
     "static/media/NLP.jpg": "/static/media/NLP.f86b53047cb4e630b5e7.jpg",
+    "static/media/sustainu.png": "/static/media/sustainu.df4d4fd7c25fa57d4203.png",
     "static/media/Pepper-hi-high-res.png": "/static/media/Pepper-hi-high-res.60783b6ff7a689d17039.png",
     "static/media/Nova.jpeg": "/static/media/Nova.936466958112f7bb79b6.jpeg",
     "static/media/logo.svg": "/static/media/logo.15e38f44b99bdd1c892293c05929972f.svg",
     "index.html": "/index.html",
     "main.aafb938e.css.map": "/static/css/main.aafb938e.css.map",
-    "main.157ca0ff.js.map": "/static/js/main.157ca0ff.js.map",
+    "main.d214caf3.js.map": "/static/js/main.d214caf3.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.aafb938e.css",
-    "static/js/main.157ca0ff.js"
+    "static/js/main.d214caf3.js"
   ]
 }
