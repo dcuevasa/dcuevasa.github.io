@@ -7,6 +7,7 @@ import freeBird from '../assets/logo.svg';
 import NLP from '../assets/NLP.jpg';
 import pepperListen from '../assets/Pepper-hi-high-res.png'
 import pepperController from '../assets/pepper-gamepad-header.jpg';
+import sustaniU from '../assets/sustainu.png'
 
 const Projects = () => {
     const { t } = useTranslation();
@@ -53,7 +54,7 @@ const Projects = () => {
             title: 'SustainU',
             description: 'Aplicación móvil para reciclaje con Inteligencia Artificial',
             category: 'mobile',
-            image: 'https://private-user-images.githubusercontent.com/88736581/365496060-a86f06de-727b-4a93-83be-21ee35cbeee3.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzMzMzI2ODMsIm5iZiI6MTczMzMzMjM4MywicGF0aCI6Ii84ODczNjU4MS8zNjU0OTYwNjAtYTg2ZjA2ZGUtNzI3Yi00YTkzLTgzYmUtMjFlZTM1Y2JlZWUzLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDEyMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMjA0VDE3MTMwM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTAzNTU4ZjM4NzM5ZDExZmM3M2NjZTkyOTM0ZGRmZDRiNDNkZWQ3NDc3NzhmMzA3ZTc4Yzk1NjRkOTFhYTA1YTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.HOzbQl-SZmyTFu15MUmztj8lFlMQ0y0Xhq25CcJAK6c',
+            image: sustaniU,
             tags: ['Flutter', 'AI', 'Mobile'],
             github: 'https://github.com/ISIS3510-Team14/Flutter'
         },

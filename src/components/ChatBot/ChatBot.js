@@ -27,7 +27,15 @@ const ChatBot = () => {
             }
         }
 
-        return answers[currentLang].responses.default;
+        // Si no hay coincidencias, retornar respuesta por defecto
+        if (answers[currentLang].responses.default) {
+            return answers[currentLang].responses.default;
+        }
+
+        // Fallback en caso de que no exista respuesta por defecto
+        return currentLang === 'es' ? 
+            "¡Interesante! Como robot social, me encanta aprender de las interacciones con humanos. ¿Hay algo específico que quieras saber sobre mí o sobre SinfonIA?" :
+            "Interesting! As a social robot, I love learning from interactions with humans. Is there anything specific you'd like to know about me or SinfonIA?";
     };
 
     const handleSubmit = (e) => {
