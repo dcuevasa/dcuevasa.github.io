@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import LanguageSelector from "./LanguageSelector";
 
 const NavBar = () => {
     return (
@@ -15,6 +16,7 @@ const NavBar = () => {
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
                         <Nav.Link as={Link} to="/projects">Projects</Nav.Link>
                     </Nav>
+                    <LanguageSelector />
                 </Navbar.Collapse>
             </Container>
         </Navbar>

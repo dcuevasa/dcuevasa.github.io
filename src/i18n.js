@@ -59,10 +59,39 @@ i18n
           "projectsDescription": "Discover all my projects and work done",
           "myProjects": "My Projects",
           "all": "All",
-          "robotics": "Robotics",
           "ai": "AI",
           "web": "Web",
           "mobile": "Mobile",
+          "projects-list": {
+            "robocup": {
+                "title": "RoboCup@Home",
+                "description": "Development of systems for international service robotics competition"
+            },
+            "pepperNLP": {
+                "title": "Pepper NLP",
+                "description": "Natural language processing system for Pepper robot"
+            },
+            "pepperSTT": {
+                "title": "Pepper Speech-to-Text",
+                "description": "Real-time speech recognition system"
+            },
+            "pepperControl": {
+                "title": "Pepper Controller",
+                "description": "Remote control system for Pepper robot movements"
+            },
+            "sustainU": {
+                "title": "SustainU",
+                "description": "Mobile application for recycling with Artificial Intelligence"
+            },
+            "freeBird": {
+                "title": "FreeBird",
+                "description": "Web platform for trip planning"
+            },
+            "p3dx": {
+                "title": "P3DX Navigation",
+                "description": "Autonomous navigation system for P3DX robot"
+            }
+          }
         }
       },
       es: {
@@ -116,10 +145,39 @@ i18n
           "projectsDescription": "Descubre todos mis proyectos y trabajos realizados",
           "myProjects": "Mis Proyectos",
           "all": "Todos",
-          "robotics": "Robótica",
           "ai": "IA",
           "web": "Web",
           "mobile": "Móvil",
+          "projects-list": {
+            "robocup": {
+                "title": "RoboCup@Home",
+                "description": "Desarrollo de sistemas para competencia internacional de robótica de servicio"
+            },
+            "pepperNLP": {
+                "title": "Pepper NLP",
+                "description": "Sistema de procesamiento de lenguaje natural para el robot Pepper"
+            },
+            "pepperSTT": {
+                "title": "Pepper Speech-to-Text",
+                "description": "Sistema de reconocimiento de voz en tiempo real"
+            },
+            "pepperControl": {
+                "title": "Controlador Pepper",
+                "description": "Sistema de control remoto para movimientos del robot Pepper"
+            },
+            "sustainU": {
+                "title": "SustainU",
+                "description": "Aplicación móvil para reciclaje con Inteligencia Artificial"
+            },
+            "freeBird": {
+                "title": "FreeBird",
+                "description": "Plataforma web para planificación de viajes"
+            },
+            "p3dx": {
+                "title": "Navegación P3DX",
+                "description": "Sistema de navegación autónoma para robot P3DX"
+            }
+          }
         }
       }
     },

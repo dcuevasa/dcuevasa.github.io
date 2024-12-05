@@ -16,43 +16,43 @@ const Projects = () => {
         {
             id: 1,
             title: 'RoboCup@Home',
-            description: 'Desarrollo de sistemas para competencia internacional de robótica de servicio',
+            description: t('projects-list.robocup.description'),
             category: 'robotics',
             image: imgRoboCupTeam,
             tags: ['ROS', 'Python', 'Robotics'],
-            github: null
+            github: "https://github.com/SinfonIAUniandes/task_utilities"
         },
         {
             id: 2,
             title: 'Pepper NLP',
-            description: 'Sistema de procesamiento de lenguaje natural para el robot Pepper',
+            description: t('projects-list.pepperNLP.description'),
             category: 'ai',
             image: NLP,
             tags: ['NLP', 'Python', 'AI'],
-            github: null
+            github: "https://github.com/SinfonIAUniandes/speech_utilities"
         },
         {
             id: 3,
             title: 'Pepper Speech-to-Text',
-            description: 'Sistema de reconocimiento de voz en tiempo real',
+            description: t('projects-list.pepperSTT.description'),
             category: 'ai',
             image: pepperListen,
             tags: ['Speech Recognition', 'Real-time', 'Python'],
-            github: null
+            github: "https://github.com/SinfonIAUniandes/speech_utilities"
         },
         {
             id: 4,
             title: 'Pepper Web Controller',
-            description: 'Interfaz web para control remoto del robot Pepper',
+            description: t('projects-list.pepperControl.description'),
             category: 'web',
             image: pepperController,
             tags: ['React', 'ROS', 'WebSockets'],
-            github: null
+            github: "https://github.com/SinfonIAUniandes/web-remote-controller"
         },
         {
             id: 5,
             title: 'SustainU',
-            description: 'Aplicación móvil para reciclaje con Inteligencia Artificial',
+            description: t('projects-list.sustainU.description'),
             category: 'mobile',
             image: sustaniU,
             tags: ['Flutter', 'AI', 'Mobile'],
@@ -61,11 +61,20 @@ const Projects = () => {
         {
             id: 6,
             title: 'FreeBird',
-            description: 'Plataforma web para planificación de viajes',
+            description: t('projects-list.freeBird.description'),
             category: 'web',
             image: freeBird,
             tags: ['React', 'Node.js', 'Full Stack'],
             github: 'https://github.com/dcuevasa/ISIS3710_202420_S2_E2_Front'
+        },
+        {
+            id: 7,
+            title: 'P3DX Navigation',
+            description: t('projects-list.p3dx.description'),
+            category: 'robotics',
+            image: "https://www.researchgate.net/profile/Fernando-De-La-Rosa/publication/236013145/figure/fig2/AS:380488092012546@1467726838739/P3DX-mobile-robot-equipped-with-an-URG-laser-rangefinder.png",
+            tags: ['ROS', 'Python', 'Robotics'],
+            github: "https://github.com/dcuevasa/P3DX-Navigation"
         }
     ];
 

@@ -20,6 +20,22 @@ const ChatBot = () => {
         const inputLower = input.toLowerCase();
         const { keywords } = answers[currentLang];
 
+        // Agregar arrays de respuestas fallback
+        const fallbackResponses = {
+            es: [
+                "¡Interesante! Como robot social, me encanta aprender de las interacciones con humanos. ¿Hay algo específico que quieras saber sobre mí o sobre SinfonIA?",
+                "¡Qué bueno charlar contigo! Me ayuda a mejorar mi comprensión. ¿Te gustaría saber más sobre mis capacidades?",
+                "Cada conversación es una oportunidad de aprendizaje. ¿Hay algún tema en particular que te interese explorar?",
+                "¡Fascinante! Me encanta conocer nuevas perspectivas. ¿Qué te gustaría descubrir sobre SinfonIA?"
+            ],
+            en: [
+                "Interesting! As a social robot, I love learning from interactions with humans. Is there anything specific you'd like to know about me or SinfonIA?",
+                "Great chatting with you! It helps me improve my understanding. Would you like to know more about my capabilities?",
+                "Every conversation is a learning opportunity. Is there any particular topic you'd like to explore?",
+                "Fascinating! I love gaining new perspectives. What would you like to discover about SinfonIA?"
+            ]
+        };
+
         // Buscar coincidencias en keywords
         for (const [category, keywordList] of Object.entries(keywords)) {
             if (keywordList.some(keyword => inputLower.includes(keyword))) {
@@ -32,10 +48,9 @@ const ChatBot = () => {
             return answers[currentLang].responses.default;
         }
 
-        // Fallback en caso de que no exista respuesta por defecto
-        return currentLang === 'es' ? 
-            "¡Interesante! Como robot social, me encanta aprender de las interacciones con humanos. ¿Hay algo específico que quieras saber sobre mí o sobre SinfonIA?" :
-            "Interesting! As a social robot, I love learning from interactions with humans. Is there anything specific you'd like to know about me or SinfonIA?";
+        // Fallback con respuesta aleatoria
+        const randomIndex = Math.floor(Math.random() * fallbackResponses[currentLang].length);
+        return fallbackResponses[currentLang][randomIndex];
     };
 
     const handleSubmit = (e) => {

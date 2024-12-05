@@ -73,3 +73,30 @@ code {
 .gap-3 {
     gap: 1rem;
 }
+
+
+/* Añadir a src/index.css */
+.language-selector {
+    display: flex;
+    gap: 5px;
+}
+
+.lang-btn {
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    background: white;
+    color: #007bff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.lang-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.lang-btn:hover {
+    background: #0056b3;
+    color: white;
+}
