@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.aafb938e.css",
-    "main.js": "/static/js/main.d214caf3.js",
+    "main.css": "/static/css/main.d374e7d5.css",
+    "main.js": "/static/js/main.9e6b8ed5.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
     "static/media/SinfonIA-Sabana.jpeg": "/static/media/SinfonIA-Sabana.eaa493729b1ae3ae0231.jpeg",
@@ -17,12 +17,12 @@
     "static/media/Nova.jpeg": "/static/media/Nova.936466958112f7bb79b6.jpeg",
     "static/media/logo.svg": "/static/media/logo.15e38f44b99bdd1c892293c05929972f.svg",
     "index.html": "/index.html",
-    "main.aafb938e.css.map": "/static/css/main.aafb938e.css.map",
-    "main.d214caf3.js.map": "/static/js/main.d214caf3.js.map",
+    "main.d374e7d5.css.map": "/static/css/main.d374e7d5.css.map",
+    "main.9e6b8ed5.js.map": "/static/js/main.9e6b8ed5.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.aafb938e.css",
-    "static/js/main.d214caf3.js"
+    "static/css/main.d374e7d5.css",
+    "static/js/main.9e6b8ed5.js"
   ]
 }
