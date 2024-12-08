@@ -90,8 +90,13 @@ i18n
             "p3dx": {
                 "title": "P3DX Navigation",
                 "description": "Autonomous navigation system for P3DX robot"
-            }
-          }
+            },
+            "serviceFinder": {
+                "title": "Service Finder",
+                "description": "Web application to find services in your area using Bard API"
+            },
+          },
+          "GitHub": "View on Github",
         }
       },
       es: {
@@ -176,8 +181,13 @@ i18n
             "p3dx": {
                 "title": "Navegación P3DX",
                 "description": "Sistema de navegación autónoma para robot P3DX"
-            }
-          }
+            },
+            "serviceFinder": {
+                "title": "Service Finder",
+                "description": "Aplicación web para encontrar servicios en tu área utilizando la API de Bard"
+            },
+          },
+          "GitHub": "Ver en Github",
         }
       }
     },

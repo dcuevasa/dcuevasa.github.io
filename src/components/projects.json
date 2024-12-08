@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title": "RoboCup@Home",
+    "description": "projects-list.robocup.description",
+    "category": "robotics",
+    "image": "imgRoboCupTeam",
+    "tags": ["ROS", "Python", "Robotics"],
+    "github": "https://github.com/SinfonIAUniandes/task_utilities"
+  },
+  {
+    "id": 2,
+    "title": "Pepper NLP",
+    "description": "projects-list.pepperNLP.description",
+    "category": "ai",
+    "image": "NLP",
+    "tags": ["NLP", "Python", "AI"],
+    "github": "https://github.com/SinfonIAUniandes/speech_utilities"
+  },
+  {
+    "id": 3,
+    "title": "Pepper Speech-to-Text",
+    "description": "projects-list.pepperSTT.description",
+    "category": "ai",
+    "image": "pepperListen",
+    "tags": ["Speech Recognition", "Real-time", "Python"],
+    "github": "https://github.com/SinfonIAUniandes/speech_utilities"
+  },
+  {
+    "id": 4,
+    "title": "Pepper Web Controller",
+    "description": "projects-list.pepperControl.description",
+    "category": "web",
+    "image": "pepperController",
+    "tags": ["React", "ROS", "WebSockets"],
+    "github": "https://github.com/SinfonIAUniandes/web-remote-controller"
+  },
+  {
+    "id": 5,
+    "title": "SustainU",
+    "description": "projects-list.sustainU.description",
+    "category": "mobile",
+    "image": "sustaniU",
+    "tags": ["Flutter", "AI", "Mobile"],
+    "github": "https://github.com/ISIS3510-Team14/Flutter"
+  },
+  {
+    "id": 6,
+    "title": "FreeBird",
+    "description": "projects-list.freeBird.description",
+    "category": "web",
+    "image": "freeBird",
+    "tags": ["React", "Node.js", "Full Stack"],
+    "github": "https://github.com/dcuevasa/FreeBird-Front"
+  },
+  {
+    "id": 7,
+    "title": "P3DX Navigation",
+    "description": "projects-list.p3dx.description",
+    "category": "robotics",
+    "image": "https://www.researchgate.net/profile/Fernando-De-La-Rosa/publication/236013145/figure/fig2/AS:380488092012546@1467726838739/P3DX-mobile-robot-equipped-with-an-URG-laser-rangefinder.png",
+    "tags": ["ROS", "Python", "Robotics"],
+    "github": "https://github.com/dcuevasa/P3DX-Navigation"
+  },
+  {
+    "id": 8,
+    "title": "Service Finder",
+    "description": "projects-list.serviceFinder.description",
+    "category": "ai",
+    "image": "serviceFinder",
+    "tags": ["Full Stack", "Python", "AI"],
+    "github": "https://github.com/dcuevasa/serviceFinder"
+  }
+]
