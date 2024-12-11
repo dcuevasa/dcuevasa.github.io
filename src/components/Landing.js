@@ -21,7 +21,7 @@ const Landing = () => {
         {
             src: imgSocialHub,
             alt: 'Social Hub RoboCup 2024',
-            caption: 'At the Social Hub during RoboCup 2024'
+            caption: t('SocialHub')
         },
         {
             src: imgRobocup,
@@ -34,24 +34,24 @@ const Landing = () => {
             caption: 'Nova'
         },
         {
-            src: imgRosMeetupTeam,
-            alt: 'ROS Meetup',
-            caption: 'ROS Meetup'
-        },
-        {
             src: imgRosMeetupMe,
             alt: 'ROS Meetup Presentation',
-            caption: 'ROS Meetup Presentation'
+            caption: t('ROSMeetupPresentation')
+        },
+        {
+            src: imgRosMeetupTeam,
+            alt: 'ROS Meetup Team',
+            caption: t('ROSMeetupTeam')
         },
         {
             src: imgSinfonIaSabana,
             alt: 'SinfonIA with the Sabana Herons',
-            caption: 'SinfonIA with the Sabana Herons at the RoboCup'
+            caption: t('SabanaHerons')
         },
         {
             src: imgSinfonIaPepper,
             alt: 'SinfonIA Team with Pepper',
-            caption: 'SinfonIA with Nova'
+            caption: t('SinfonIANova')
         }
     ];
 

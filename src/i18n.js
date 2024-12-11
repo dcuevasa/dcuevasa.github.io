@@ -97,6 +97,11 @@ i18n
             },
           },
           "GitHub": "View on Github",
+          "SocialHub": "At the Social Hub during RoboCup 2024",
+          "ROSMeetupPresentation": "ROS Meetup Presentation",
+          "ROSMeetupTeam": "SinfonIA Team at ROS Meetup",
+          "SabanaHerons": "SinfonIA with the Sabana Herons at the RoboCup",
+          "SinfonIANova": "SinfonIA Team with Nova"
         }
       },
       es: {
@@ -188,6 +193,11 @@ i18n
             },
           },
           "GitHub": "Ver en Github",
+          "SocialHub": "En el Social Hub durante RoboCup 2024",
+          "ROSMeetupPresentation": "Presentación en ROS Meetup",
+          "ROSMeetupTeam": "Equipo SinfonIA en ROS Meetup",
+          "SabanaHerons": "SinfonIA con los Sabana Herons en la RoboCup",
+          "SinfonIANova": "Equipo SinfonIA con Nova"
         }
       }
     },
