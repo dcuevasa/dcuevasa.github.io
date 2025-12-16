@@ -38,6 +38,11 @@ const About = () => {
                         <ul className="list-group">
                             <li className="list-group-item">{t('cert1')}</li>
                             <li className="list-group-item">{t('cert2')}</li>
+                            <li className="list-group-item">{t('cert3')}</li>
+                            <li className="list-group-item">{t('cert4')}</li>
+                            <li className="list-group-item">{t('cert5')}</li>
+                            <li className="list-group-item">{t('cert6')}</li>
+                            <li className="list-group-item">{t('cert7')}</li>
                         </ul>
                     </section>
 
