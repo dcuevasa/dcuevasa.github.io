@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d374e7d5.css",
-    "main.js": "/static/js/main.3bfd41e4.js",
+    "main.css": "/static/css/main.589d4e61.css",
+    "main.js": "/static/js/main.4aa8c1fa.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
     "static/media/serviceFinder.png": "/static/media/serviceFinder.439eca5dbd643fc2cf43.png",
@@ -12,18 +12,30 @@
     "static/media/SinfonIA-RoboCup-Team.jpeg": "/static/media/SinfonIA-RoboCup-Team.7ed0afccfb2c662551e2.jpeg",
     "static/media/RosMeetup-Me.jpeg": "/static/media/RosMeetup-Me.a606e3274a988dcc8964.jpeg",
     "static/media/Foto-SocialHub-Robocup2024.jpeg": "/static/media/Foto-SocialHub-Robocup2024.fa83ea2251fb88e02937.jpeg",
+    "static/media/yolo.png": "/static/media/yolo.be439fd9e94758c34850.png",
     "static/media/NLP.jpg": "/static/media/NLP.f86b53047cb4e630b5e7.jpg",
+    "static/media/unity6.png": "/static/media/unity6.430d49c029a3807dd1c0.png",
     "static/media/sustainu.png": "/static/media/sustainu.df4d4fd7c25fa57d4203.png",
     "static/media/Pepper-hi-high-res.png": "/static/media/Pepper-hi-high-res.60783b6ff7a689d17039.png",
+    "static/media/python.png": "/static/media/python.4455c0ed04be44ca8cd1.png",
     "static/media/Nova.jpeg": "/static/media/Nova.936466958112f7bb79b6.jpeg",
+    "static/media/New_Power_BI_Logo.svg.png": "/static/media/New_Power_BI_Logo.svg.0a343c1a5f4f4fd2a29f.png",
+    "static/media/openxr.png": "/static/media/openxr.811f6ac4b7afd11bb9af.png",
+    "static/media/gazebo.png": "/static/media/gazebo.df7c3432f0b10e189f70.png",
+    "static/media/Ros_logo.svg.png": "/static/media/Ros_logo.svg.6203d6a8b18f09e6b007.png",
+    "static/media/Csharp_Logo.png": "/static/media/Csharp_Logo.fc430729bfa8902c06fd.png",
     "static/media/logo.svg": "/static/media/logo.15e38f44b99bdd1c892293c05929972f.svg",
+    "static/media/logopepper.svg": "/static/media/logopepper.9579b9781d24574f26aa2eefc91b7e01.svg",
+    "static/media/firebase-1.svg": "/static/media/firebase-1.e6583a29712875c8977afcba1d0b6883.svg",
+    "static/media/meta-3.svg": "/static/media/meta-3.6d9703f2b7c9c7d43c1ba644dbac140f.svg",
     "index.html": "/index.html",
-    "main.d374e7d5.css.map": "/static/css/main.d374e7d5.css.map",
-    "main.3bfd41e4.js.map": "/static/js/main.3bfd41e4.js.map",
+    "static/media/fastapi.svg": "/static/media/fastapi.6c84dc4ea9626837be0ce2c5523b6d52.svg",
+    "main.589d4e61.css.map": "/static/css/main.589d4e61.css.map",
+    "main.4aa8c1fa.js.map": "/static/js/main.4aa8c1fa.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d374e7d5.css",
-    "static/js/main.3bfd41e4.js"
+    "static/css/main.589d4e61.css",
+    "static/js/main.4aa8c1fa.js"
   ]
 }
