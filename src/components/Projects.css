@@ -114,3 +114,35 @@
         grid-template-columns: 1fr;
     }
 }
+
+.research-line-group {
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+.research-line-group:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.research-line-title {
+    color: #555;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.research-line-title::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background: #eee;
+}
+
+.badge.bg-secondary {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+}

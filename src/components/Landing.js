@@ -43,12 +43,12 @@ const Landing = () => {
     {
       src: imgRobocup,
       alt: "RoboCup Competition",
-      caption: "RoboCup 2024",
+      caption: t("RoboCup2024"),
     },
     {
       src: imgNovaAction,
       alt: "Nova",
-      caption: "Nova",
+      caption: t("Nova"),
     },
     {
       src: imgRosMeetupMe,
@@ -113,11 +113,7 @@ const Landing = () => {
                 <br></br>
                 <div className="d-flex flex-wrap gap-4 justify-content-center">
                   <div className="tech-item text-center">
-                    <img
-                      src={iconRos}
-                      alt="ROS"
-                      className="tech-icon mb-2"
-                    />
+                    <img src={iconRos} alt="ROS" className="tech-icon mb-2" />
                     <div className="tech-name">ROS1 & ROS2</div>
                   </div>
                   <div className="tech-item text-center">
@@ -157,11 +153,7 @@ const Landing = () => {
                     <div className="tech-name">Python</div>
                   </div>
                   <div className="tech-item text-center">
-                    <img
-                      src={iconCpp}
-                      alt="C++"
-                      className="tech-icon mb-2"
-                    />
+                    <img src={iconCpp} alt="C++" className="tech-icon mb-2" />
                     <div className="tech-name">C++</div>
                   </div>
                 </div>
@@ -183,19 +175,11 @@ const Landing = () => {
                     <span>PyTorch</span>
                   </div>
                   <div className="tech-item text-center">
-                    <img
-                      src={iconYolo}
-                      alt="YOLO"
-                      className="tech-icon me-2"
-                    />
+                    <img src={iconYolo} alt="YOLO" className="tech-icon me-2" />
                     <span>YOLO</span>
                   </div>
                   <div className="tech-item text-center">
-                    <img
-                      src={iconGcp}
-                      alt="GCP"
-                      className="tech-icon me-2"
-                    />
+                    <img src={iconGcp} alt="GCP" className="tech-icon me-2" />
                     <span>GCP</span>
                   </div>
                   <div className="tech-item text-center">
@@ -232,18 +216,14 @@ const Landing = () => {
           </section>
 
           <br></br>
-          {/* Tercera fila - Desarrollo Web */}
-          <div class="row mb-4">
-            <div class="col-12">
+          {/* Tercera fila - Desarrollo XR */}
+          <div className="row mb-4">
+            <div className="col-12">
               <h4>{t("xrDevelopment")}</h4>
               <br></br>
               <div className="d-flex flex-wrap gap-4 justify-content-center">
                 <div className="tech-item text-center">
-                  <img
-                    src={iconUnity}
-                    alt="Unity"
-                    className="tech-icon me-2"
-                  />
+                  <img src={iconUnity} alt="Unity" className="tech-icon me-2" />
                   <span>Unity</span>
                 </div>
                 <div className="tech-item text-center">
@@ -263,11 +243,7 @@ const Landing = () => {
                   <span>Meta SDK</span>
                 </div>
                 <div className="tech-item text-center">
-                  <img
-                    src={iconCsharp}
-                    alt="C#"
-                    className="tech-icon me-2"
-                  />
+                  <img src={iconCsharp} alt="C#" className="tech-icon me-2" />
                   <span>C#</span>
                 </div>
               </div>
@@ -309,33 +285,29 @@ const Landing = () => {
             <h2>{t("experience")}</h2>
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">
-                  Graduate Research Assistant - Robotics Lab
-                </h5>
+                <h5 className="card-title">{t("researchAssistant")}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
                   Universidad de los Andes
                 </h6>
-                <p className="card-text">2025 - {t("present")}</p>
+                <p className="card-text">{t("researchAssistantDates")}</p>
               </div>
             </div>
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">Robotics Research Monitor</h5>
+                <h5 className="card-title">{t("teachingAssistant")}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
                   Universidad de los Andes
                 </h6>
-                <p className="card-text">2025 - 2025</p>
+                <p className="card-text">{t("teachingAssistantDates")}</p>
               </div>
             </div>
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">
-                  Teaching Assistant - Mobile App Development
-                </h5>
+                <h5 className="card-title">{t("roboticsMonitor")}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
                   Universidad de los Andes
                 </h6>
-                <p className="card-text">2025 - 2025</p>
+                <p className="card-text">{t("roboticsMonitorDates")}</p>
               </div>
             </div>
           </section>
