@@ -1,14 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.589d4e61.css",
-    "main.js": "/static/js/main.4aa8c1fa.js",
+    "main.js": "/static/js/main.a5a6afd5.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
+    "static/media/geomagic-touch.png": "/static/media/geomagic-touch.235e0d7f3791d1ff91e6.png",
     "static/media/serviceFinder.png": "/static/media/serviceFinder.439eca5dbd643fc2cf43.png",
     "static/media/SinfonIA-Sabana.jpeg": "/static/media/SinfonIA-Sabana.eaa493729b1ae3ae0231.jpeg",
     "static/media/pepper-gamepad-header.jpg": "/static/media/pepper-gamepad-header.6dd1578d3a3724eca208.jpg",
     "static/media/RosMeetup-Team.jpeg": "/static/media/RosMeetup-Team.78aae8c147d8d00a4e53.jpeg",
     "static/media/SinfonIA-Team-Pepper.jpeg": "/static/media/SinfonIA-Team-Pepper.f614c46a8aad30a2c273.jpeg",
+    "static/media/navigation.png": "/static/media/navigation.adf48c32926e122dec58.png",
     "static/media/SinfonIA-RoboCup-Team.jpeg": "/static/media/SinfonIA-RoboCup-Team.7ed0afccfb2c662551e2.jpeg",
     "static/media/RosMeetup-Me.jpeg": "/static/media/RosMeetup-Me.a606e3274a988dcc8964.jpeg",
     "static/media/Foto-SocialHub-Robocup2024.jpeg": "/static/media/Foto-SocialHub-Robocup2024.fa83ea2251fb88e02937.jpeg",
@@ -31,11 +33,11 @@
     "index.html": "/index.html",
     "static/media/fastapi.svg": "/static/media/fastapi.6c84dc4ea9626837be0ce2c5523b6d52.svg",
     "main.589d4e61.css.map": "/static/css/main.589d4e61.css.map",
-    "main.4aa8c1fa.js.map": "/static/js/main.4aa8c1fa.js.map",
+    "main.a5a6afd5.js.map": "/static/js/main.a5a6afd5.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.589d4e61.css",
-    "static/js/main.4aa8c1fa.js"
+    "static/js/main.a5a6afd5.js"
   ]
 }
