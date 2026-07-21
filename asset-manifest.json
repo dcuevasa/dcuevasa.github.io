@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.589d4e61.css",
-    "main.js": "/static/js/main.a5a6afd5.js",
+    "main.js": "/static/js/main.113e9f9d.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
     "static/media/geomagic-touch.png": "/static/media/geomagic-touch.235e0d7f3791d1ff91e6.png",
@@ -26,18 +26,18 @@
     "static/media/gazebo.png": "/static/media/gazebo.df7c3432f0b10e189f70.png",
     "static/media/Ros_logo.svg.png": "/static/media/Ros_logo.svg.6203d6a8b18f09e6b007.png",
     "static/media/Csharp_Logo.png": "/static/media/Csharp_Logo.fc430729bfa8902c06fd.png",
-    "static/media/logo.svg": "/static/media/logo.15e38f44b99bdd1c892293c05929972f.svg",
+    "static/media/logo.svg": "/static/media/logo.0e61a9e9b3f0c03f06302d6cfbe2f4ee.svg",
     "static/media/logopepper.svg": "/static/media/logopepper.9579b9781d24574f26aa2eefc91b7e01.svg",
     "static/media/firebase-1.svg": "/static/media/firebase-1.e6583a29712875c8977afcba1d0b6883.svg",
     "static/media/meta-3.svg": "/static/media/meta-3.6d9703f2b7c9c7d43c1ba644dbac140f.svg",
     "index.html": "/index.html",
     "static/media/fastapi.svg": "/static/media/fastapi.6c84dc4ea9626837be0ce2c5523b6d52.svg",
     "main.589d4e61.css.map": "/static/css/main.589d4e61.css.map",
-    "main.a5a6afd5.js.map": "/static/js/main.a5a6afd5.js.map",
+    "main.113e9f9d.js.map": "/static/js/main.113e9f9d.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.589d4e61.css",
-    "static/js/main.a5a6afd5.js"
+    "static/js/main.113e9f9d.js"
   ]
 }
