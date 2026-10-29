@@ -451,17 +451,58 @@ def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_
         "candidate_repositories": candidate_repos,
     }
 
-    endpoints = [
-        ("https://models.github.ai/inference/chat/completions", AI_MODEL),
-    ]
+    endpoints = []
+    short_model = AI_MODEL.split("/")[-1] if "/" in AI_MODEL else AI_MODEL
 
-    tokens_to_try = [MODELS_TOKEN]
-    if GITHUB_TOKEN and GITHUB_TOKEN != MODELS_TOKEN:
-        tokens_to_try.append(GITHUB_TOKEN)
+    # 1. Free-tier external providers if configured in GitHub Secrets
+    gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if gemini_key:
+        endpoints.append(
+            (
+                "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+                "gemini-2.5-flash",
+                [gemini_key],
+            )
+        )
+
+    groq_key = os.getenv("GROQ_API_KEY")
+    if groq_key:
+        endpoints.append(
+            (
+                "https://api.groq.com/openai/v1/chat/completions",
+                "llama-3.3-70b-versatile",
+                [groq_key],
+            )
+        )
+
+    openrouter_key = os.getenv("OPENROUTER_API_KEY")
+    if openrouter_key:
+        endpoints.append(
+            (
+                "https://openrouter.ai/api/v1/chat/completions",
+                "meta-llama/llama-3.3-70b-instruct:free",
+                [openrouter_key],
+            )
+        )
+
+    # 2. GitHub Models / Azure AI Inference endpoints
+    gh_tokens = [t for t in [MODELS_TOKEN, GITHUB_TOKEN] if t]
+    seen_tokens = set()
+    unique_gh_tokens = [t for t in gh_tokens if not (t in seen_tokens or seen_tokens.add(t))]
+    if unique_gh_tokens:
+        endpoints.append(
+            ("https://models.inference.ai.azure.com/chat/completions", short_model, unique_gh_tokens)
+        )
+        endpoints.append(
+            ("https://models.github.ai/inference/chat/completions", AI_MODEL, unique_gh_tokens)
+        )
 
     last_error = None
-    for endpoint_url, model_name in endpoints:
+    for endpoint_url, model_name, tokens_to_try in endpoints:
+        endpoint_broken = False
         for token in tokens_to_try:
+            if endpoint_broken:
+                break
             for attempt in range(3):
                 try:
                     response = requests.post(
@@ -495,7 +536,16 @@ def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_
                         break
 
                     if response.status_code != 200:
-                        last_error = f"HTTP {response.status_code}: {response.text[:300]}"
+                        last_error = f"HTTP {response.status_code} from {endpoint_url}: {response.text[:300]}"
+                        break
+
+                    # If the endpoint returns a static plain-text 'OK' stub (retired models.github.ai), skip immediately
+                    if (response.text or "").strip() == "OK":
+                        last_error = (
+                            f"{endpoint_url} returned static 'OK' text stub instead of inference JSON "
+                            "(GitHub Models endpoint retired/unavailable)."
+                        )
+                        endpoint_broken = True
                         break
 
                     data = parse_models_response(response)
@@ -507,10 +557,219 @@ def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_
                     return json.loads(content)
 
                 except Exception as exc:
-                    last_error = str(exc)
+                    last_error = f"{endpoint_url}: {exc}"
                     time.sleep(2)
 
-    raise RuntimeError(f"Failed to call GitHub Models API: {last_error}")
+    print(
+        f"Notice: Remote AI endpoints unavailable ({last_error}). "
+        "Running built-in smart curation engine to select top showcase projects..."
+    )
+    return curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=max_projects)
+
+
+ACRONYM_MAP = {
+    "ros": "ROS",
+    "ros2": "ROS2",
+    "vla": "VLA",
+    "act": "ACT",
+    "llm": "LLM",
+    "llms": "LLMs",
+    "nlp": "NLP",
+    "rag": "RAG",
+    "ai": "AI",
+    "g1": "G1",
+    "3ds": "3DS",
+    "vr": "VR",
+    "ar": "AR",
+    "xr": "XR",
+    "ik": "IK",
+    "so101": "SO101",
+    "lerobot": "LeRobot",
+    "mujoco": "MuJoCo",
+    "api": "API",
+    "noetic": "Noetic",
+    "unitree": "Unitree",
+    "nao": "NAO",
+    "naoqi": "NAOqi",
+    "wearos": "WearOS",
+    "dsu": "DSU",
+    "ps4": "PS4",
+    "bop": "BOP",
+    "yolo": "YOLO",
+    "bert": "BERT",
+}
+
+
+def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
+    """
+    Deterministic smart curator when remote AI endpoints are retired or unreachable.
+    Scores candidate repositories by domain relevance, documentation quality, and stars,
+    and produces portfolio entries matching the exact style of projects.json and src/i18n.js.
+    """
+    scored = []
+    for c in candidate_repos:
+        name = c.get("name", "")
+        desc = (c.get("description") or "").strip()
+        readme = (c.get("readme_snippet") or "").strip()
+        topics = [t.lower() for t in (c.get("topics") or [])]
+        stars = c.get("stars", 0)
+        text_blob = f"{name} {desc} {' '.join(topics)} {readme[:400]}".lower()
+
+        score = 0
+        if desc:
+            score += 4
+        if len(readme) > 200:
+            score += 3
+        if c.get("candidate_images"):
+            score += 2
+        score += min(stars * 2, 10)
+
+        robotics_kw = [
+            "lerobot", "robot", "ros", "ros2", "vla", "act", "mujoco", "gazebo",
+            "unitree", "g1", "pepper", "nao", "so101", "teleop", "kinematics", "navigation",
+        ]
+        ai_kw = [
+            "llm", "rag", "bert", "yolo", "vision", "agent", "langgraph", "nlp",
+            "detection", "segmentation", "latex", "research", "transformer",
+        ]
+        mobile_kw = ["android", "wearos", "kotlin", "flutter", "3ds", "quest", "unity", "vr", "ar"]
+
+        if any(k in text_blob for k in robotics_kw):
+            score += 6
+        if any(k in text_blob for k in ai_kw):
+            score += 5
+        if any(k in text_blob for k in mobile_kw):
+            score += 3
+
+        # Require a meaningful description or rich README + domain match
+        if score < 7 or (not desc and len(readme) < 300):
+            continue
+
+        scored.append((score, c, text_blob))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+    top_items = scored[:max_projects]
+
+    selected = []
+    for score, c, text_blob in top_items:
+        name = c["name"]
+        words = [w for w in re.split(r"[-_ ]+", name) if w]
+        if not words:
+            continue
+
+        # Build camelCase key
+        first_w = words[0].lower()
+        rest_w = "".join(ACRONYM_MAP.get(w.lower(), w.capitalize()) for w in words[1:])
+        key = re.sub(r"[^a-zA-Z0-9]", "", first_w + rest_w)
+
+        # Build clean title (2-4 words)
+        title_words = [ACRONYM_MAP.get(w.lower(), w.capitalize()) for w in words[:4]]
+        title_en = " ".join(title_words)
+        title_es = title_en
+
+        # Classify area & research_line
+        if any(k in text_blob for k in ["lerobot", "vla", "act", "so101", "policy"]):
+            area = "robotics"
+            research_line = "vlas_and_acts"
+        elif any(k in text_blob for k in ["langgraph", "agent", "llm"]) and "ros" in text_blob:
+            area = "robotics"
+            research_line = "embodied_agentic_ai"
+        elif any(k in text_blob for k in ["unitree", "g1", "pepper", "nao", "ros", "ros2", "robot"]):
+            area = "robotics"
+            research_line = "social_robotics"
+        elif any(k in text_blob for k in ["vision", "yolo", "detector", "pose", "segmentation"]):
+            area = "ai"
+            research_line = "vision"
+        elif any(k in text_blob for k in ["llm", "rag", "bert", "nlp", "research", "latex"]):
+            area = "ai"
+            research_line = "nlp"
+        elif any(k in text_blob for k in ["gazebo", "mujoco", "simulation", "virtual"]):
+            area = "others"
+            research_line = "simulation"
+        else:
+            area = "mobile"
+            research_line = "others"
+
+        # Build 3 concise tags
+        tags = []
+        tag_rules = [
+            ("lerobot", "LeRobot"),
+            ("ros2", "ROS2"),
+            ("ros", "ROS"),
+            ("vla", "VLA"),
+            ("mujoco", "MuJoCo"),
+            ("unitree", "Unitree G1"),
+            ("vision", "Vision"),
+            ("yolo", "YOLO"),
+            ("llm", "LLMs"),
+            ("langgraph", "LangGraph"),
+            ("nlp", "NLP"),
+            ("android", "Android"),
+            ("wearos", "WearOS"),
+            ("kotlin", "Kotlin"),
+            ("3ds", "3DS"),
+        ]
+        for kw, label in tag_rules:
+            if kw in text_blob and label not in tags:
+                tags.append(label)
+            if len(tags) >= 3:
+                break
+        if c.get("language") and len(tags) < 3 and c["language"] not in tags:
+            tags.append(c["language"])
+        if area == "robotics" and len(tags) < 3 and "Robotics" not in tags:
+            tags.append("Robotics")
+        elif area == "ai" and len(tags) < 3 and "AI" not in tags:
+            tags.append("AI")
+        if not tags:
+            tags = ["Software"]
+
+        # Clean concise description (1 sentence, no trailing period)
+        raw_desc = (c.get("description") or "").strip()
+        if not raw_desc:
+            # Extract first non-heading line from README
+            for rline in (c.get("readme_snippet") or "").splitlines():
+                sline = rline.strip()
+                if sline and not sline.startswith("#") and not sline.startswith("!") and len(sline) > 25:
+                    raw_desc = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", sline)
+                    break
+        if not raw_desc:
+            raw_desc = f"Development of {title_en} for {area} applications"
+
+        first_sentence = re.split(r"\.\s+", raw_desc)[0].strip().rstrip(".")
+        if len(first_sentence) > 140:
+            first_sentence = first_sentence[:137].rsplit(" ", 1)[0]
+
+        desc_en = first_sentence
+        desc_es = first_sentence
+
+        # Select image
+        candidate_imgs = c.get("candidate_images") or []
+        image = candidate_imgs[0] if candidate_imgs else ""
+
+        selected.append(
+            {
+                "name": name,
+                "github": c.get("html_url", ""),
+                "key": key,
+                "area": area,
+                "research_line": research_line,
+                "image": image,
+                "tags": tags[:3],
+                "title_en": title_en,
+                "description_en": desc_en,
+                "title_es": title_es,
+                "description_es": desc_es,
+                "selection_reason": f"High domain relevance score ({score}) in {area}/{research_line}",
+            }
+        )
+
+    return {
+        "selected_projects": selected,
+        "skipped_summary": (
+            f"Evaluated {len(candidate_repos)} candidates via smart domain curator; "
+            f"selected top {len(selected)} showcase projects."
+        ),
+    }
 
 
 def sanitize_project_entry(entry, existing_keys):
