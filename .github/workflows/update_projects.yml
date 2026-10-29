@@ -18,6 +18,11 @@ on:
         required: false
         default: 'openai/gpt-4o-mini'
         type: string
+      max_new_projects:
+        description: 'Maximum number of important projects to add'
+        required: false
+        default: '5'
+        type: string
       force_deploy:
         description: 'Force build and deploy to GitHub Pages even if no projects changed'
         required: false
@@ -53,6 +58,7 @@ jobs:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           UPDATE_EXISTING: ${{ inputs.update_existing }}
           INCLUDE_PRIVATE: ${{ inputs.include_private }}
+          MAX_NEW_PROJECTS: ${{ inputs.max_new_projects || '5' }}
           AI_MODEL: ${{ inputs.model || 'openai/gpt-4o-mini' }}
         run: python scripts/update_projects.py
 

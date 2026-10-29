@@ -19,6 +19,7 @@ MODELS_TOKEN = os.getenv("MODELS_TOKEN") or GITHUB_TOKEN
 AI_MODEL = os.getenv("AI_MODEL", "openai/gpt-4o-mini")
 UPDATE_EXISTING = os.getenv("UPDATE_EXISTING", "false").lower() == "true"
 INCLUDE_PRIVATE = os.getenv("INCLUDE_PRIVATE", "false").lower() == "true"
+MAX_NEW_PROJECTS = int(os.getenv("MAX_NEW_PROJECTS", "5"))
 GITHUB_OWNER = os.getenv("GITHUB_REPOSITORY_OWNER", "dcuevasa")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,10 +49,27 @@ LOCAL_IMAGE_KEYS = [
     "pepperNavigation",
 ]
 
-EXCLUDED_REPOS = {
-    "dcuevasa/dcuevasa",
-    "dcuevasa/dcuevasa.github.io",
-    "dcuevasa/github-exporter",
+EXCLUDED_NAMES = {
+    "-",
+    ".",
+    "dcuevasa",
+    "dcuevasa.github.io",
+    "github-exporter",
+}
+
+COURSEWORK_PATTERNS = re.compile(
+    r"^(caso|taller|lab|infracomp|dalgo|isis\d+|hw|tarea|parcial|test|exam|ejercicio|tutorial)",
+    re.IGNORECASE,
+)
+
+DATA_OR_DUMP_NAMES = {
+    "imagenes",
+    "datos",
+    "dataset",
+    "datasets",
+    "measurements",
+    "places",
+    "assets",
 }
 
 
@@ -127,7 +145,6 @@ def get_public_repos_fallback(headers):
             if not data:
                 break
             for repo in data:
-                # Only include org repos if they belong to the main user or are already tracked
                 if owner.lower() == GITHUB_OWNER.lower() or not repo.get("fork"):
                     repos_by_full_name[repo["full_name"].lower()] = repo
             page += 1
@@ -144,7 +161,6 @@ def get_repository_readme(owner, repo_name):
         return None
 
     if response.status_code != 200:
-        print(f"Error fetching README for {owner}/{repo_name}: {response.status_code}")
         return None
 
     payload = response.json()
@@ -188,7 +204,6 @@ def extract_readme_images(readme_text, owner, repo_name, default_branch="main"):
             continue
 
         if url.startswith("http://") or url.startswith("https://"):
-            # Convert github.com/.../blob/... image links to raw.githubusercontent.com
             blob_match = re.match(
                 r"^https?://github\.com/([^/]+)/([^/]+)/blob/([^/]+)/(.+)$", url
             )
@@ -203,7 +218,6 @@ def extract_readme_images(readme_text, owner, repo_name, default_branch="main"):
             )
             candidates.append(raw_gh_url)
 
-    # Deduplicate while preserving order
     seen = set()
     unique = []
     for c in candidates:
@@ -213,11 +227,61 @@ def extract_readme_images(readme_text, owner, repo_name, default_branch="main"):
     return unique[:5]
 
 
+def is_candidate_important(repo, existing_by_url):
+    """
+    Fast heuristic pre-filtering to skim away trivial, coursework, or irrelevant repos
+    BEFORE passing candidates to the AI model.
+    """
+    name = repo["name"]
+    full_name = repo["full_name"].lower()
+    html_url = repo["html_url"]
+    norm_url = normalize_github_url(html_url)
+
+    # 1. Skip if already in projects.json (unless UPDATE_EXISTING is active)
+    if norm_url in existing_by_url and not UPDATE_EXISTING:
+        return False, "Already present in projects.json"
+
+    # 2. Skip explicit excluded names
+    if name.lower() in EXCLUDED_NAMES:
+        return False, "Excluded system or profile repository"
+
+    # 3. Skip private repos unless explicitly enabled
+    if repo.get("private") and not INCLUDE_PRIVATE:
+        return False, "Private repository (INCLUDE_PRIVATE=false)"
+
+    # 4. Skip archived or disabled repos
+    if repo.get("archived") or repo.get("disabled"):
+        return False, "Repository is archived or disabled"
+
+    # 5. Skip unstarred forks
+    if repo.get("fork") and repo.get("stargazers_count", 0) == 0:
+        return False, "Fork repository without stars"
+
+    # 6. Skip empty or near-empty repos (size < 30 KB)
+    if repo.get("size", 0) < 30:
+        return False, f"Trivial repository size ({repo.get('size', 0)} KB)"
+
+    # 7. Skip obvious university coursework / lab assignments
+    if COURSEWORK_PATTERNS.search(name) and repo.get("stargazers_count", 0) == 0:
+        return False, "Coursework or assignment pattern"
+
+    # 8. Skip simple data dumps / asset collections
+    if name.lower() in DATA_OR_DUMP_NAMES and not repo.get("description"):
+        return False, "Data or asset dump without description"
+
+    # 9. Skip repos with zero description, zero topics, and zero stars
+    if not repo.get("description") and not repo.get("topics") and repo.get("stargazers_count", 0) == 0:
+        # We allow it only if it has a substantial size (> 500 KB) and is not coursework
+        if repo.get("size", 0) < 300:
+            return False, "No description, topics, or stars"
+
+    return True, "Passed initial screening"
+
+
 def parse_i18n_projects_list(i18n_content):
     """Extract existing EN and ES project titles and descriptions from src/i18n.js."""
     translations = {"en": {}, "es": {}}
 
-    # Split roughly at 'es: {' to separate English and Spanish blocks
     es_split = re.search(r"\n\s*es:\s*\{\s*\n\s*translation:\s*\{", i18n_content)
     if not es_split:
         return translations
@@ -242,7 +306,7 @@ def parse_i18n_projects_list(i18n_content):
     return translations
 
 
-def build_style_examples(projects, i18n_translations, max_examples=10):
+def build_style_examples(projects, i18n_translations, max_examples=8):
     """Build representative examples from existing projects.json + i18n.js for the AI prompt."""
     examples = []
     for proj in projects[:max_examples]:
@@ -255,9 +319,7 @@ def build_style_examples(projects, i18n_translations, max_examples=10):
                 "key": key,
                 "area": proj.get("area"),
                 "research_line": proj.get("research_line"),
-                "image": proj.get("image"),
                 "tags": proj.get("tags"),
-                "github": proj.get("github"),
                 "title_en": en_entry.get("title", ""),
                 "description_en": en_entry.get("description", ""),
                 "title_es": es_entry.get("title", ""),
@@ -267,68 +329,59 @@ def build_style_examples(projects, i18n_translations, max_examples=10):
     return examples
 
 
-def call_github_models_ai(repo_info, style_examples, existing_keys, existing_entry=None):
-    """Call GitHub Models chat completions API to generate a project entry matching the site style."""
+def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_projects=5):
+    """
+    Skim through all candidate repositories in a SINGLE AI call, selecting ONLY
+    the most important, portfolio-worthy showcase projects and generating their metadata.
+    """
     if not MODELS_TOKEN:
         raise ValueError("MODELS_TOKEN or GITHUB_TOKEN is required to call GitHub Models API.")
 
     system_prompt = (
-        "You are an expert portfolio curator for David Cuevas's personal website (dcuevasa.github.io). "
-        "David is an MSc in Systems and Computer Engineering student and robotics/AI researcher "
-        "(SinfonIA Uniandes, RoboCup@Home winner, working on social robotics, embodied agentic AI, "
-        "VLAs/ACTs, NLP, computer vision, simulation, and mobile/XR interfaces).\n\n"
-        "Your job is to generate or update a project entry for `src/components/projects.json` and "
-        "its bilingual translations (English and Spanish) for `src/i18n.js`, strictly sticking to "
-        "the style, tone, categorization, and conciseness of the existing projects.\n\n"
-        "STRICT STYLE RULES:\n"
-        f"1. `area` MUST be one of: {json.dumps(VALID_AREAS)}\n"
-        f"2. `research_line` MUST be one of: {json.dumps(VALID_RESEARCH_LINES)}\n"
-        "   - Use `social_robotics`, `embodied_agentic_ai`, or `vlas_and_acts` for `robotics` projects.\n"
-        "   - Use `nlp` or `vision` for `ai` projects.\n"
-        "   - Use `simulation` for Gazebo / Digital Twin / VR simulation projects (with `area`: `others` or `robotics`).\n"
-        "   - Use `others` for `mobile`, web, 3DS, controller, or general software projects.\n"
-        "3. `tags` MUST be an array of 3 concise technology/domain strings matching existing style "
-        "(e.g. [\"ROS2\", \"Python\", \"Robotics\"], [\"LeRobot\", \"MuJoCo\", \"Robotics\"], [\"NLP\", \"BERT\", \"AI\"]).\n"
-        "4. `key` MUST be a concise camelCase identifier (e.g. `lerobotMujoco`, `presidentialRAG`, `naoGazebo`).\n"
-        "5. `title_en` and `title_es`: Short, clean project title (2 to 4 words).\n"
-        "6. `description_en` and `description_es`: A single concise sentence (8 to 18 words) WITHOUT a trailing period, "
-        "matching the exact style of existing entries.\n"
-        "7. `image`: Prefer one of the `readme_images` URLs if available and relevant; otherwise if a local asset key "
-        f"from {json.dumps(LOCAL_IMAGE_KEYS)} clearly matches the topic (e.g., Pepper, NLP, navigation), use that key; "
-        "otherwise use `\"\"`.\n"
-        "8. Set `skip` to `true` ONLY if the repository is a trivial config/test repo, fork without original work, "
-        "or empty boilerplate that does not belong on a portfolio. If `existing_entry` is provided, `skip` MUST be `false`.\n\n"
-        "Respond ONLY with a valid JSON object matching this schema:\n"
+        "You are an expert editorial curator for David Cuevas's personal portfolio website (dcuevasa.github.io).\n"
+        "David is an MSc Systems & Computer Engineering student and AI/Robotics researcher at Universidad de los Andes "
+        "(RoboCup@Home champion, working on embodied agentic AI, VLAs/ACTs, social robotics, NLP, computer vision, simulation, and mobile/XR systems).\n\n"
+        "TASK:\n"
+        "1. SKIM through all candidate repositories in the provided list.\n"
+        "2. FILTER OUT unimportant repositories: Skip school exercises, course labs, basic tutorials, data/image dumps, "
+        "minor scratchpads, duplicates, or trivial utilities.\n"
+        f"3. SELECT ONLY THE TOP {max_projects} MOST IMPORTANT, SHOWCASE-WORTHY PROJECTS that truly demonstrate "
+        "engineering depth, research innovation, or notable capability for a professional portfolio.\n"
+        "4. For each selected project, generate its portfolio entry and EN/ES translations strictly adhering to these style rules:\n"
+        f"   - `area`: MUST be one of: {json.dumps(VALID_AREAS)}\n"
+        f"   - `research_line`: MUST be one of: {json.dumps(VALID_RESEARCH_LINES)}\n"
+        "   - `tags`: exactly 3 concise tags matching existing capitalization (e.g. [\"LeRobot\", \"MuJoCo\", \"Robotics\"]).\n"
+        "   - `key`: unique camelCase identifier (e.g. `lerobotVisionDetector`, `unitreeG1Virtual`).\n"
+        "   - `title_en` & `title_es`: short, clean title (2 to 4 words).\n"
+        "   - `description_en` & `description_es`: single concise sentence (8 to 18 words) WITHOUT a trailing period.\n"
+        f"   - `image`: choose the best URL from candidate's `candidate_images` if present; otherwise a local asset key from {json.dumps(LOCAL_IMAGE_KEYS)} if strongly relevant; otherwise \"\".\n"
+        "   - `selection_reason`: 1 short sentence explaining why this repository was selected as important.\n\n"
+        "Return ONLY a valid JSON object matching this schema:\n"
         "{\n"
-        '  "skip": false,\n'
-        '  "key": "camelCaseKey",\n'
-        '  "area": "robotics | ai | mobile | others",\n'
-        '  "research_line": "social_robotics | embodied_agentic_ai | vlas_and_acts | nlp | vision | simulation | others",\n'
-        '  "image": "url_or_local_key_or_empty",\n'
-        '  "tags": ["Tag1", "Tag2", "Tag3"],\n'
-        '  "title_en": "English Title",\n'
-        '  "description_en": "Concise English description without trailing period",\n'
-        '  "title_es": "Spanish Title",\n'
-        '  "description_es": "Concise Spanish description without trailing period"\n'
+        '  "selected_projects": [\n'
+        "    {\n"
+        '      "name": "repository-name",\n'
+        '      "github": "https://github.com/...",\n'
+        '      "key": "camelCaseKey",\n'
+        '      "area": "robotics | ai | mobile | others",\n'
+        '      "research_line": "social_robotics | embodied_agentic_ai | vlas_and_acts | nlp | vision | simulation | others",\n'
+        '      "image": "url_or_key_or_empty",\n'
+        '      "tags": ["Tag1", "Tag2", "Tag3"],\n'
+        '      "title_en": "English Title",\n'
+        '      "description_en": "Concise English description without trailing period",\n'
+        '      "title_es": "Spanish Title",\n'
+        '      "description_es": "Concise Spanish description without trailing period",\n'
+        '      "selection_reason": "Why this is an important portfolio project"\n'
+        "    }\n"
+        "  ],\n"
+        '  "skipped_summary": "Brief explanation of why other candidates were rejected"\n'
         "}"
     )
 
-    readme_excerpt = (repo_info.get("readme") or "")[:4000]
     user_payload = {
         "style_examples": style_examples,
-        "existing_keys_to_avoid_collision": sorted(list(existing_keys)),
-        "existing_entry": existing_entry,
-        "repository": {
-            "name": repo_info["name"],
-            "full_name": repo_info["full_name"],
-            "owner": repo_info["owner"],
-            "html_url": repo_info["html_url"],
-            "description": repo_info.get("description"),
-            "language": repo_info.get("language"),
-            "topics": repo_info.get("topics", []),
-            "readme_images": repo_info.get("readme_images", []),
-            "readme_excerpt": readme_excerpt,
-        },
+        "existing_keys_to_avoid": sorted(list(existing_keys)),
+        "candidate_repositories": candidate_repos,
     }
 
     endpoints = [
@@ -362,7 +415,7 @@ def call_github_models_ai(repo_info, style_examples, existing_keys, existing_ent
                 )
 
                 if response.status_code == 429:
-                    wait_seconds = 10 * (attempt + 1)
+                    wait_seconds = 8 * (attempt + 1)
                     print(f"Rate limited (429) on {endpoint_url}. Waiting {wait_seconds}s...")
                     time.sleep(wait_seconds)
                     continue
@@ -373,7 +426,6 @@ def call_github_models_ai(repo_info, style_examples, existing_keys, existing_ent
 
                 data = response.json()
                 content = data["choices"][0]["message"]["content"]
-                # Strip markdown code fences if present
                 content = re.sub(r"^```(?:json)?\s*", "", content.strip())
                 content = re.sub(r"\s*```$", "", content.strip())
                 return json.loads(content)
@@ -385,52 +437,40 @@ def call_github_models_ai(repo_info, style_examples, existing_keys, existing_ent
     raise RuntimeError(f"Failed to call GitHub Models API: {last_error}")
 
 
-def sanitize_ai_result(ai_result, existing_keys, existing_entry=None):
-    """Validate and sanitize the AI output so it strictly conforms to the schema."""
-    key = re.sub(r"[^a-zA-Z0-9_]", "", str(ai_result.get("key", "project")))
+def sanitize_project_entry(entry, existing_keys):
+    """Ensure each selected project entry strictly conforms to the schema."""
+    key = re.sub(r"[^a-zA-Z0-9_]", "", str(entry.get("key", "project")))
     if not key:
         key = "project"
     if key[0].isupper():
         key = key[0].lower() + key[1:]
 
-    if existing_entry:
-        title_field = existing_entry.get("title", "")
-        if title_field.startswith("projects-list."):
-            key = title_field.split(".")[1]
-    else:
-        base_key = key
-        counter = 2
-        while key in existing_keys:
-            key = f"{base_key}{counter}"
-            counter += 1
+    base_key = key
+    counter = 2
+    while key in existing_keys:
+        key = f"{base_key}{counter}"
+        counter += 1
 
-    area = ai_result.get("area", "others")
+    area = entry.get("area", "others")
     if area not in VALID_AREAS:
         area = "others"
 
-    research_line = ai_result.get("research_line", "others")
+    research_line = entry.get("research_line", "others")
     if research_line not in VALID_RESEARCH_LINES:
         research_line = "others"
 
-    tags = ai_result.get("tags", [])
+    tags = entry.get("tags", [])
     if not isinstance(tags, list) or not tags:
         tags = ["Software"]
     tags = [str(t).strip() for t in tags if str(t).strip()][:4]
 
-    image = str(ai_result.get("image") or "").strip()
-    if existing_entry and existing_entry.get("image"):
-        old_img = existing_entry["image"]
-        # Keep existing local asset key or non-expired URL unless AI found a clean replacement for an expired JWT URL
-        if not ("jwt=" in old_img and image):
-            image = old_img
-
-    title_en = str(ai_result.get("title_en") or key).strip()
-    desc_en = str(ai_result.get("description_en") or "").strip().rstrip(".")
-    title_es = str(ai_result.get("title_es") or title_en).strip()
-    desc_es = str(ai_result.get("description_es") or desc_en).strip().rstrip(".")
+    image = str(entry.get("image") or "").strip()
+    title_en = str(entry.get("title_en") or key).strip()
+    desc_en = str(entry.get("description_en") or "").strip().rstrip(".")
+    title_es = str(entry.get("title_es") or title_en).strip()
+    desc_es = str(entry.get("description_es") or desc_en).strip().rstrip(".")
 
     return {
-        "skip": bool(ai_result.get("skip", False)) and existing_entry is None,
         "key": key,
         "area": area,
         "research_line": research_line,
@@ -440,6 +480,8 @@ def sanitize_ai_result(ai_result, existing_keys, existing_entry=None):
         "description_en": desc_en,
         "title_es": title_es,
         "description_es": desc_es,
+        "github": entry.get("github", ""),
+        "selection_reason": entry.get("selection_reason", ""),
     }
 
 
@@ -480,7 +522,6 @@ def update_i18n_file(i18n_path, new_translations):
             if existing_pattern.search(section_text):
                 section_text = existing_pattern.sub(new_block, section_text, count=1)
             else:
-                # Insert right before `others: {` inside `"projects-list"`
                 others_pattern = re.compile(
                     r"(^[ \t]*others:\s*\{\s*\n[ \t]*title:)",
                     re.MULTILINE,
@@ -525,147 +566,143 @@ def main():
 
     print("Fetching repositories from GitHub...")
     raw_repos = get_all_repos()
-    print(f"Found {len(raw_repos)} repositories.")
+    print(f"Total repositories fetched: {len(raw_repos)}")
 
+    # 1. Fast heuristic screening
+    screened_candidates = []
+    skipped_screen_count = 0
+
+    for repo in raw_repos:
+        is_candidate, reason = is_candidate_important(repo, existing_by_url)
+        if is_candidate:
+            screened_candidates.append(repo)
+        else:
+            skipped_screen_count += 1
+
+    print(
+        f"Pre-screening complete: {len(screened_candidates)} candidates passed "
+        f"({skipped_screen_count} trivial/existing/coursework repositories excluded)."
+    )
+
+    if not screened_candidates:
+        print("No eligible candidate repositories to evaluate.")
+        return
+
+    # 2. Gather compact summaries & README intros for candidates
+    print(f"Extracting README previews for {len(screened_candidates)} candidates...")
+    ai_candidates_payload = []
     export_data = []
-    candidates_to_process = []
 
-    for index, repo in enumerate(raw_repos):
+    for idx, repo in enumerate(screened_candidates):
         owner = repo["owner"]["login"]
         name = repo["name"]
         full_name = repo["full_name"]
-        html_url = repo["html_url"]
-        norm_url = normalize_github_url(html_url)
         default_branch = repo.get("default_branch", "main")
 
-        is_existing = norm_url in existing_by_url
-
-        if not is_existing:
-            if full_name.lower() in EXCLUDED_REPOS:
-                continue
-            if repo.get("private") and not INCLUDE_PRIVATE:
-                continue
-            if repo.get("fork") or repo.get("archived") or repo.get("disabled"):
-                continue
-            # Only automatically add new repos owned by GITHUB_OWNER or orgs already in projects.json
-            known_owners = {
-                GITHUB_OWNER.lower(),
-                "sinfoniauniandes",
-                "oasis-uniandes",
-            }
-            if owner.lower() not in known_owners:
-                continue
-
-        if is_existing and not UPDATE_EXISTING:
-            continue
-
-        print(f"Fetching README ({index + 1}/{len(raw_repos)}): {full_name}")
         readme_text = get_repository_readme(owner, name)
-
-        # Skip brand-new empty repositories without description and without README
-        if not is_existing and not readme_text and not repo.get("description"):
-            print(f"  Skipping {full_name} (no README or description).")
-            continue
-
         readme_images = extract_readme_images(readme_text, owner, name, default_branch)
+        readme_snippet = (readme_text or "")[:1000]
 
-        repo_info = {
-            "name": name,
-            "full_name": full_name,
-            "owner": owner,
-            "private": repo.get("private", False),
-            "html_url": html_url,
-            "description": repo.get("description"),
-            "language": repo.get("language"),
-            "topics": repo.get("topics", []),
-            "created_at": repo.get("created_at"),
-            "updated_at": repo.get("updated_at"),
-            "readme": readme_text,
-            "readme_images": readme_images,
-        }
-        export_data.append(repo_info)
-        candidates_to_process.append((repo_info, existing_by_url.get(norm_url)))
+        export_data.append(
+            {
+                "name": name,
+                "full_name": full_name,
+                "owner": owner,
+                "html_url": repo["html_url"],
+                "description": repo.get("description"),
+                "language": repo.get("language"),
+                "stars": repo.get("stargazers_count", 0),
+                "topics": repo.get("topics", []),
+                "readme": readme_text,
+            }
+        )
 
-    # Save export JSON artifact (matching export_readmes.py behavior)
+        ai_candidates_payload.append(
+            {
+                "name": name,
+                "full_name": full_name,
+                "html_url": repo["html_url"],
+                "description": repo.get("description"),
+                "language": repo.get("language"),
+                "stars": repo.get("stargazers_count", 0),
+                "size_kb": repo.get("size", 0),
+                "topics": repo.get("topics", []),
+                "candidate_images": readme_images,
+                "readme_snippet": readme_snippet,
+            }
+        )
+
+    # Save artifact
     with open(EXPORT_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(export_data, f, ensure_ascii=False, indent=4)
-    print(f"Saved GitHub export data ({len(export_data)} repos) to {EXPORT_JSON_PATH}")
 
-    if not candidates_to_process:
-        print("No new or updated repositories to process.")
+    # 3. Skim and curate in a SINGLE AI request!
+    print(
+        f"\nSending {len(ai_candidates_payload)} candidates to AI model ({AI_MODEL}) "
+        f"to skim and select up to {MAX_NEW_PROJECTS} important projects in ONE pass..."
+    )
+    ai_response = skim_and_curate_with_ai(
+        candidate_repos=ai_candidates_payload,
+        style_examples=style_examples,
+        existing_keys=existing_keys,
+        max_projects=MAX_NEW_PROJECTS,
+    )
+
+    selected_raw = ai_response.get("selected_projects", [])
+    skipped_summary = ai_response.get("skipped_summary", "")
+
+    print(f"\nAI Curation Decision: Selected {len(selected_raw)} project(s).")
+    if skipped_summary:
+        print(f"Summary of skipped items: {skipped_summary}")
+
+    if not selected_raw:
+        print("No new projects were deemed significant enough for the portfolio.")
         return
 
     next_id = max((p.get("id", 0) for p in projects), default=0) + 1
     i18n_updates = {}
-    added_count = 0
-    updated_count = 0
+    added_projects = []
 
-    for repo_info, existing_entry in candidates_to_process:
-        full_name = repo_info["full_name"]
-        print(f"Analyzing {full_name} with AI model ({AI_MODEL})...")
-        try:
-            raw_ai = call_github_models_ai(
-                repo_info=repo_info,
-                style_examples=style_examples,
-                existing_keys=existing_keys,
-                existing_entry=existing_entry,
-            )
-            result = sanitize_ai_result(raw_ai, existing_keys, existing_entry)
-        except Exception as exc:
-            print(f"  Warning: AI generation failed for {full_name}: {exc}")
-            continue
-
-        if result["skip"]:
-            print(f"  AI marked {full_name} as skip (not a portfolio project).")
-            continue
-
-        key = result["key"]
+    for item in selected_raw:
+        clean = sanitize_project_entry(item, existing_keys)
+        key = clean["key"]
         existing_keys.add(key)
 
-        if existing_entry is not None:
-            existing_entry["area"] = result["area"]
-            existing_entry["research_line"] = result["research_line"]
-            existing_entry["image"] = result["image"]
-            existing_entry["tags"] = result["tags"]
-            updated_count += 1
-            print(f"  Updated existing project: {key} ({full_name})")
-        else:
-            new_project = {
-                "id": next_id,
-                "title": f"projects-list.{key}.title",
-                "description": f"projects-list.{key}.description",
-                "area": result["area"],
-                "research_line": result["research_line"],
-                "image": result["image"],
-                "tags": result["tags"],
-                "github": repo_info["html_url"],
-            }
-            projects.append(new_project)
-            next_id += 1
-            added_count += 1
-            print(f"  Added new project #{new_project['id']}: {key} ({full_name})")
+        new_proj = {
+            "id": next_id,
+            "title": f"projects-list.{key}.title",
+            "description": f"projects-list.{key}.description",
+            "area": clean["area"],
+            "research_line": clean["research_line"],
+            "image": clean["image"],
+            "tags": clean["tags"],
+            "github": clean["github"],
+        }
+        projects.append(new_proj)
+        next_id += 1
+        added_projects.append(new_proj)
 
         i18n_updates[key] = {
-            "title_en": result["title_en"],
-            "description_en": result["description_en"],
-            "title_es": result["title_es"],
-            "description_es": result["description_es"],
+            "title_en": clean["title_en"],
+            "description_en": clean["description_en"],
+            "title_es": clean["title_es"],
+            "description_es": clean["description_es"],
         }
 
-        # Gentle pause between AI requests to respect free-tier rate limits
-        time.sleep(2)
-
-    if added_count > 0 or updated_count > 0:
-        with open(PROJECTS_JSON_PATH, "w", encoding="utf-8") as f:
-            json.dump(projects, f, ensure_ascii=False, indent=2)
-            f.write("\n")
-
-        update_i18n_file(I18N_JS_PATH, i18n_updates)
         print(
-            f"\nCompleted! Added {added_count} new project(s) and updated {updated_count} project(s)."
+            f"  + Added #{new_proj['id']} [{clean['area']} / {clean['research_line']}]: "
+            f"\"{clean['title_en']}\" ({clean['github']})"
         )
-    else:
-        print("\nNo changes were needed for projects.json or i18n.js.")
+        if clean.get("selection_reason"):
+            print(f"    Reason: {clean['selection_reason']}")
+
+    # 4. Save updated files
+    with open(PROJECTS_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(projects, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+    update_i18n_file(I18N_JS_PATH, i18n_updates)
+    print(f"\nSuccessfully added {len(added_projects)} important project(s) to projects.json and i18n.js!")
 
 
 if __name__ == "__main__":
