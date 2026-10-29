@@ -386,10 +386,6 @@ def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_
 
     endpoints = [
         ("https://models.github.ai/inference/chat/completions", AI_MODEL),
-        (
-            "https://models.inference.ai.azure.com/chat/completions",
-            AI_MODEL.split("/")[-1],
-        ),
     ]
 
     last_error = None
