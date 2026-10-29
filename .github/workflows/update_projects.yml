@@ -18,6 +18,11 @@ on:
         required: false
         default: 'openai/gpt-4o-mini'
         type: string
+      force_deploy:
+        description: 'Force build and deploy to GitHub Pages even if no projects changed'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -52,16 +57,36 @@ jobs:
         run: python scripts/update_projects.py
 
       - name: Commit and push updated projects
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/components/projects.json src/i18n.js
           if git diff --staged --quiet; then
             echo "No changes to projects.json or i18n.js to commit."
+            echo "committed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "chore(projects): auto-update portfolio projects via AI workflow"
             git push
+            echo "committed=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set up Bun
+        if: steps.commit.outputs.committed == 'true' || inputs.force_deploy == true
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies & build site
+        if: steps.commit.outputs.committed == 'true' || inputs.force_deploy == true
+        run: |
+          bun install
+          bun run build
+
+      - name: Deploy to GitHub Pages
+        if: steps.commit.outputs.committed == 'true' || inputs.force_deploy == true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
 
       - name: Upload JSON Artifact
         uses: actions/upload-artifact@v4
