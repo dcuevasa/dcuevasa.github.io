@@ -657,10 +657,10 @@ def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
         if not words:
             continue
 
-        # Build camelCase key
+        # Build camelCase key (always valid JS identifier starting with [a-z])
         first_w = words[0].lower()
         rest_w = "".join(ACRONYM_MAP.get(w.lower(), w.capitalize()) for w in words[1:])
-        key = re.sub(r"[^a-zA-Z0-9]", "", first_w + rest_w)
+        key = ensure_valid_js_key(first_w + rest_w)
 
         # Build clean title (2-4 words)
         title_words = [ACRONYM_MAP.get(w.lower(), w.capitalize()) for w in words[:4]]
@@ -772,13 +772,68 @@ def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
     }
 
 
+def ensure_valid_js_key(raw_key):
+    """Ensure a translation key is a valid unquoted JS camelCase identifier starting with [a-z]."""
+    key = re.sub(r"[^a-zA-Z0-9_]", "", str(raw_key or "project"))
+    m = re.match(r"^(\d+[a-zA-Z]?)(.+)$", key)
+    if m and re.match(r"^[a-zA-Z]", m.group(2)):
+        prefix, rest = m.groups()
+        key = rest[0].lower() + rest[1:] + prefix.upper()
+    elif re.match(r"^\d", key):
+        key = f"project{key}"
+    if not key or not key[0].isalpha():
+        key = f"project{key}"
+    return key[0].lower() + key[1:]
+
+
+def repair_invalid_js_keys(projects_path, i18n_path):
+    """
+    Scan projects.json and src/i18n.js for any project keys starting with a digit
+    (which cause ESLint/Babel 'Identifier directly after number' syntax errors)
+    and repair them in place.
+    """
+    with open(projects_path, "r", encoding="utf-8") as f:
+        projects = json.load(f)
+    with open(i18n_path, "r", encoding="utf-8") as f:
+        i18n_content = f.read()
+
+    repaired_map = {}
+
+    for proj in projects:
+        for field in ("title", "description"):
+            val = proj.get(field, "")
+            if val.startswith("projects-list."):
+                parts = val.split(".")
+                if len(parts) >= 3 and re.match(r"^\d", parts[1]):
+                    bad_key = parts[1]
+                    good_key = ensure_valid_js_key(bad_key)
+                    repaired_map[bad_key] = good_key
+                    proj[field] = f"projects-list.{good_key}.{parts[2]}"
+
+    for m in re.finditer(r"^([ \t]+)(\d+[a-zA-Z0-9_]*)(:\s*\{)", i18n_content, flags=re.MULTILINE):
+        bad_key = m.group(2)
+        if bad_key not in repaired_map:
+            repaired_map[bad_key] = ensure_valid_js_key(bad_key)
+
+    if repaired_map:
+        for bad_key, good_key in repaired_map.items():
+            i18n_content = re.sub(
+                rf"^([ \t]*){re.escape(bad_key)}(:\s*\{{)",
+                rf"\1{good_key}\2",
+                i18n_content,
+                flags=re.MULTILINE,
+            )
+        with open(projects_path, "w", encoding="utf-8") as f:
+            json.dump(projects, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        with open(i18n_path, "w", encoding="utf-8") as f:
+            f.write(i18n_content)
+        print(f"Repaired invalid JS identifier key(s) in projects.json and i18n.js: {repaired_map}")
+
+
 def sanitize_project_entry(entry, existing_keys):
     """Ensure each selected project entry strictly conforms to the schema."""
-    key = re.sub(r"[^a-zA-Z0-9_]", "", str(entry.get("key", "project")))
-    if not key:
-        key = "project"
-    if key[0].isupper():
-        key = key[0].lower() + key[1:]
+    key = ensure_valid_js_key(entry.get("key", "project"))
 
     base_key = key
     counter = 2
@@ -878,6 +933,7 @@ def update_i18n_file(i18n_path, new_translations):
 
 def main():
     print("Loading existing projects and translations...")
+    repair_invalid_js_keys(PROJECTS_JSON_PATH, I18N_JS_PATH)
     with open(PROJECTS_JSON_PATH, "r", encoding="utf-8") as f:
         projects = json.load(f)
 
