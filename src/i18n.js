@@ -309,45 +309,37 @@ i18n
               description:
                 "Computer vision and sensor fusion tools for robot environment understanding",
             },
-            colivridigitaltwin: {
-              title: "Colivridigitaltwin",
-              description: "Unity project that aims to create a digital replica of the Colivri laboratory at Uniandes",
-            },
             jros2CellphoneInterface: {
-              title: "Jros2 Cellphone Interface",
-              description: "Android (Jetpack Compose) application that exports live phone sensor telemetry to ROS 2 using standard `sensor_msgs`, `std_msgs` message",
+              title: "jros2 Cellphone Interface",
+              description: "Android Jetpack Compose application exporting live phone sensor telemetry to ROS 2",
             },
             speechUtilities2: {
-              title: "Speech Utilities2",
-              description: "This is ROS2 Package implements various tools for speech processing",
+              title: "Speech Utilities 2",
+              description: "ROS 2 package implementing speech recognition, synthesis, and natural language processing tools",
             },
             lerobotVisionDetector: {
               title: "LeRobot Vision Detector",
-              description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
+              description: "Computer vision tools for LeRobot to detect and annotate target objects with bounding boxes and masks",
             },
-            sinputredirectionandroid3D: {
-              title: "3dsinputredirectionandroid",
-              description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
+            inputRedirectionAndroid3DS: {
+              title: "3DS Input Redirection (Kotlin)",
+              description: "Native Android Kotlin application to control a Nintendo 3DS from a smartphone via Luma InputRedirection",
             },
             latex2pptx: {
-              title: "Latex2pptx",
-              description: "Convert complex LaTeX Beamer presentations into faithful, fully editable PowerPoint (.pptx) slides with native shapes, fonts, and vector",
+              title: "LaTeX to PowerPoint",
+              description: "Tool to convert LaTeX Beamer presentations into editable PowerPoint slides with native shapes and vectors",
             },
-            unitreeg1VirtualNoetic: {
-              title: "Unitreeg1 Virtual Noetic",
-              description: "A modified version of unitree_ros for ROS Noetic and Ubuntu 20.04 especifically tailored to work with G1 in Universidad de los Andes",
+            unitreeG1VirtualNoetic: {
+              title: "Unitree G1 Gazebo Noetic",
+              description: "Modified Unitree ROS package for ROS Noetic and Ubuntu 20.04 tailored for the G1 humanoid robot",
             },
             mujocoSimLeRobot: {
               title: "MuJoCo Sim LeRobot",
-              description: "This repository has examples to visualize, simulate and move lerobot arms using pyroki and mujoco",
-            },
-            oasisUniandes: {
-              title: "Oasis Uniandes",
-              description: "Pagina web de la iniciativa Oasis, hecha con React, usando TypeScript",
+              description: "Simulation and visualization examples for LeRobot robotic arms using MuJoCo and Pyroki",
             },
             webRemoteController: {
-              title: "Web Remote Controller",
-              description: "This is a React project that uses roslibjs to host a remote controller for Pepper with ROS inside of the Robot",
+              title: "Pepper Web Remote Controller",
+              description: "React and roslibjs web interface to remotely control the Pepper robot over ROS",
             },
             others: {
               title: "Other Projects",
@@ -670,45 +662,37 @@ i18n
               description:
                 "Herramientas de visión artificial y fusión de sensores para la comprensión del entorno robótico",
             },
-            colivridigitaltwin: {
-              title: "Colivridigitaltwin",
-              description: "Unity project that aims to create a digital replica of the Colivri laboratory at Uniandes",
-            },
             jros2CellphoneInterface: {
-              title: "Jros2 Cellphone Interface",
-              description: "Android (Jetpack Compose) application that exports live phone sensor telemetry to ROS 2 using standard `sensor_msgs`, `std_msgs` message",
+              title: "Interfaz Celular jros2",
+              description: "Aplicación Android en Jetpack Compose que exporta telemetría de sensores en vivo hacia ROS 2",
             },
             speechUtilities2: {
-              title: "Speech Utilities2",
-              description: "This is ROS2 Package implements various tools for speech processing",
+              title: "Utilidades de Voz 2",
+              description: "Paquete de ROS 2 con herramientas de reconocimiento, síntesis de voz y procesamiento de lenguaje natural",
             },
             lerobotVisionDetector: {
-              title: "LeRobot Vision Detector",
-              description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
+              title: "Detector de Visión LeRobot",
+              description: "Herramientas de visión computacional para LeRobot con detección de objetos y máscaras de segmentación",
             },
-            sinputredirectionandroid3D: {
-              title: "3dsinputredirectionandroid",
-              description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
+            inputRedirectionAndroid3DS: {
+              title: "3DS Input Redirection (Kotlin)",
+              description: "Aplicación nativa en Android Kotlin para controlar una Nintendo 3DS desde el smartphone mediante Luma InputRedirection",
             },
             latex2pptx: {
-              title: "Latex2pptx",
-              description: "Convert complex LaTeX Beamer presentations into faithful, fully editable PowerPoint (.pptx) slides with native shapes, fonts, and vector",
+              title: "LaTeX a PowerPoint",
+              description: "Herramienta para convertir presentaciones LaTeX Beamer en diapositivas editables de PowerPoint",
             },
-            unitreeg1VirtualNoetic: {
-              title: "Unitreeg1 Virtual Noetic",
-              description: "A modified version of unitree_ros for ROS Noetic and Ubuntu 20.04 especifically tailored to work with G1 in Universidad de los Andes",
+            unitreeG1VirtualNoetic: {
+              title: "Simulación Unitree G1 Noetic",
+              description: "Paquete Unitree ROS modificado para ROS Noetic y Ubuntu 20.04 adaptado al robot humanoide G1",
             },
             mujocoSimLeRobot: {
-              title: "MuJoCo Sim LeRobot",
-              description: "This repository has examples to visualize, simulate and move lerobot arms using pyroki and mujoco",
-            },
-            oasisUniandes: {
-              title: "Oasis Uniandes",
-              description: "Pagina web de la iniciativa Oasis, hecha con React, usando TypeScript",
+              title: "Simulación MuJoCo LeRobot",
+              description: "Ejemplos de visualización, simulación y control de brazos robóticos LeRobot usando MuJoCo y Pyroki",
             },
             webRemoteController: {
-              title: "Web Remote Controller",
-              description: "This is a React project that uses roslibjs to host a remote controller for Pepper with ROS inside of the Robot",
+              title: "Controlador Web Remoto Pepper",
+              description: "Interfaz web en React y roslibjs para controlar remotamente al robot Pepper mediante ROS",
             },
             others: {
               title: "Otros Proyectos",

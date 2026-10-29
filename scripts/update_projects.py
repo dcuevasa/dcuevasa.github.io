@@ -55,6 +55,20 @@ EXCLUDED_NAMES = {
     "dcuevasa",
     "dcuevasa.github.io",
     "github-exporter",
+    "oasis",
+    "oasis-uniandes",
+    "colivridigitaltwin",
+}
+
+DEFAULT_DOMAIN_IMAGES = {
+    "vlas_and_acts": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
+    "embodied_agentic_ai": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1000&q=80",
+    "social_robotics": "https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&w=1000&q=80",
+    "vision": "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&w=1000&q=80",
+    "nlp": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=80",
+    "simulation": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1000&q=80",
+    "mobile": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1000&q=80",
+    "others": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1000&q=80",
 }
 
 COURSEWORK_PATTERNS = re.compile(
@@ -150,6 +164,41 @@ def get_public_repos_fallback(headers):
             page += 1
 
     return list(repos_by_full_name.values())
+
+
+def user_has_commits(owner, repo_name):
+    """
+    Guardrail: Verify that GITHUB_OWNER (dcuevasa) has authored at least 1 commit
+    in the repository before allowing it to be considered as a candidate.
+    """
+    headers = get_github_headers(GITHUB_TOKEN)
+    commits_url = (
+        f"https://api.github.com/repos/{owner}/{repo_name}/commits"
+        f"?author={GITHUB_OWNER}&per_page=1"
+    )
+    try:
+        resp = requests.get(commits_url, headers=headers, timeout=20)
+        if resp.status_code == 200:
+            data = resp.json()
+            if isinstance(data, list) and len(data) >= 1:
+                return True
+
+        # Fallback: check contributors list in case commits were made with an alternate git email
+        contrib_url = f"https://api.github.com/repos/{owner}/{repo_name}/contributors?per_page=100"
+        c_resp = requests.get(contrib_url, headers=headers, timeout=20)
+        if c_resp.status_code == 200:
+            contributors = c_resp.json()
+            if isinstance(contributors, list):
+                for c in contributors:
+                    if (
+                        str(c.get("login", "")).lower() == GITHUB_OWNER.lower()
+                        and c.get("contributions", 0) >= 1
+                    ):
+                        return True
+    except Exception as exc:
+        print(f"Warning: could not verify commits for {owner}/{repo_name}: {exc}")
+
+    return False
 
 
 def get_repository_readme(owner, repo_name):
@@ -600,6 +649,14 @@ ACRONYM_MAP = {
 }
 
 
+def split_repo_words(name):
+    """Split repository names by hyphens, underscores, spaces, and camelCase boundaries."""
+    s = re.sub(r"^(\d+[a-zA-Z]+)(?=[A-Z])", r"\1 ", str(name or ""))
+    s = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", s)
+    s = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s)
+    return [w for w in re.split(r"[-_ ]+", s) if w]
+
+
 def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
     """
     Deterministic smart curator when remote AI endpoints are retired or unreachable.
@@ -653,7 +710,7 @@ def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
     selected = []
     for score, c, text_blob in top_items:
         name = c["name"]
-        words = [w for w in re.split(r"[-_ ]+", name) if w]
+        words = split_repo_words(name)
         if not words:
             continue
 
@@ -742,9 +799,14 @@ def curate_with_smart_fallback(candidate_repos, existing_keys, max_projects=5):
         desc_en = first_sentence
         desc_es = first_sentence
 
-        # Select image
+        # Select image (prefer README image, fallback to domain-matched online image)
         candidate_imgs = c.get("candidate_images") or []
-        image = candidate_imgs[0] if candidate_imgs else ""
+        if candidate_imgs:
+            image = candidate_imgs[0]
+        elif area == "mobile":
+            image = DEFAULT_DOMAIN_IMAGES["mobile"]
+        else:
+            image = DEFAULT_DOMAIN_IMAGES.get(research_line, DEFAULT_DOMAIN_IMAGES["others"])
 
         selected.append(
             {
@@ -855,6 +917,11 @@ def sanitize_project_entry(entry, existing_keys):
     tags = [str(t).strip() for t in tags if str(t).strip()][:4]
 
     image = str(entry.get("image") or "").strip()
+    if not image:
+        if area == "mobile":
+            image = DEFAULT_DOMAIN_IMAGES["mobile"]
+        else:
+            image = DEFAULT_DOMAIN_IMAGES.get(research_line, DEFAULT_DOMAIN_IMAGES["others"])
     title_en = str(entry.get("title_en") or key).strip()
     desc_en = str(entry.get("description_en") or "").strip().rstrip(".")
     title_es = str(entry.get("title_es") or title_en).strip()
@@ -979,16 +1046,22 @@ def main():
         print("No eligible candidate repositories to evaluate.")
         return
 
-    # 2. Gather compact summaries & README intros for candidates
-    print(f"Extracting README previews for {len(screened_candidates)} candidates...")
+    # 2. Verify commit guardrail (>= 1 commit by GITHUB_OWNER) & gather README previews
+    print(f"Verifying commit authorship and extracting README previews for {len(screened_candidates)} candidates...")
     ai_candidates_payload = []
     export_data = []
+    skipped_zero_commits = 0
 
     for idx, repo in enumerate(screened_candidates):
         owner = repo["owner"]["login"]
         name = repo["name"]
         full_name = repo["full_name"]
         default_branch = repo.get("default_branch", "main")
+
+        if not user_has_commits(owner, name):
+            skipped_zero_commits += 1
+            print(f"  - Skipping {full_name}: 0 commits authored by {GITHUB_OWNER}")
+            continue
 
         readme_text = get_repository_readme(owner, name)
         readme_images = extract_readme_images(readme_text, owner, name, default_branch)
@@ -1022,6 +1095,13 @@ def main():
                 "readme_snippet": readme_snippet,
             }
         )
+
+    if skipped_zero_commits:
+        print(f"Commit guardrail excluded {skipped_zero_commits} repository/repositories with 0 commits by {GITHUB_OWNER}.")
+
+    if not ai_candidates_payload:
+        print(f"No eligible candidate repositories with commits by {GITHUB_OWNER} to evaluate.")
+        return
 
     # Save artifact
     with open(EXPORT_JSON_PATH, "w", encoding="utf-8") as f:
