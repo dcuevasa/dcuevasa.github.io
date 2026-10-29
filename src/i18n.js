@@ -325,9 +325,29 @@ i18n
               title: "LeRobot Vision Detector",
               description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
             },
-            3dsinputredirectionandroid: {
+            sinputredirectionandroid3D: {
               title: "3dsinputredirectionandroid",
               description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
+            },
+            latex2pptx: {
+              title: "Latex2pptx",
+              description: "Convert complex LaTeX Beamer presentations into faithful, fully editable PowerPoint (.pptx) slides with native shapes, fonts, and vector",
+            },
+            unitreeg1VirtualNoetic: {
+              title: "Unitreeg1 Virtual Noetic",
+              description: "A modified version of unitree_ros for ROS Noetic and Ubuntu 20.04 especifically tailored to work with G1 in Universidad de los Andes",
+            },
+            mujocoSimLeRobot: {
+              title: "MuJoCo Sim LeRobot",
+              description: "This repository has examples to visualize, simulate and move lerobot arms using pyroki and mujoco",
+            },
+            oasisUniandes: {
+              title: "Oasis Uniandes",
+              description: "Pagina web de la iniciativa Oasis, hecha con React, usando TypeScript",
+            },
+            webRemoteController: {
+              title: "Web Remote Controller",
+              description: "This is a React project that uses roslibjs to host a remote controller for Pepper with ROS inside of the Robot",
             },
             others: {
               title: "Other Projects",
@@ -666,9 +686,29 @@ i18n
               title: "LeRobot Vision Detector",
               description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
             },
-            3dsinputredirectionandroid: {
+            sinputredirectionandroid3D: {
               title: "3dsinputredirectionandroid",
               description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
+            },
+            latex2pptx: {
+              title: "Latex2pptx",
+              description: "Convert complex LaTeX Beamer presentations into faithful, fully editable PowerPoint (.pptx) slides with native shapes, fonts, and vector",
+            },
+            unitreeg1VirtualNoetic: {
+              title: "Unitreeg1 Virtual Noetic",
+              description: "A modified version of unitree_ros for ROS Noetic and Ubuntu 20.04 especifically tailored to work with G1 in Universidad de los Andes",
+            },
+            mujocoSimLeRobot: {
+              title: "MuJoCo Sim LeRobot",
+              description: "This repository has examples to visualize, simulate and move lerobot arms using pyroki and mujoco",
+            },
+            oasisUniandes: {
+              title: "Oasis Uniandes",
+              description: "Pagina web de la iniciativa Oasis, hecha con React, usando TypeScript",
+            },
+            webRemoteController: {
+              title: "Web Remote Controller",
+              description: "This is a React project that uses roslibjs to host a remote controller for Pepper with ROS inside of the Robot",
             },
             others: {
               title: "Otros Proyectos",

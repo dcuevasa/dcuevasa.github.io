@@ -504,8 +504,8 @@
   },
   {
     "id": 37,
-    "title": "projects-list.3dsinputredirectionandroid.title",
-    "description": "projects-list.3dsinputredirectionandroid.description",
+    "title": "projects-list.sinputredirectionandroid3D.title",
+    "description": "projects-list.sinputredirectionandroid3D.description",
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "https://github.com/user-attachments/assets/75fad0dd-6a71-40cd-94c5-2d9c5dfd1a8c",
@@ -515,5 +515,73 @@
       "Kotlin"
     ],
     "github": "https://github.com/dcuevasa/3dsInputRedirectionAndroid"
+  },
+  {
+    "id": 38,
+    "title": "projects-list.latex2pptx.title",
+    "description": "projects-list.latex2pptx.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "",
+    "tags": [
+      "Python",
+      "Robotics"
+    ],
+    "github": "https://github.com/dcuevasa/latex2pptx"
+  },
+  {
+    "id": 39,
+    "title": "projects-list.unitreeg1VirtualNoetic.title",
+    "description": "projects-list.unitreeg1VirtualNoetic.description",
+    "area": "robotics",
+    "research_line": "social_robotics",
+    "image": "",
+    "tags": [
+      "ROS",
+      "Unitree G1",
+      "C++"
+    ],
+    "github": "https://github.com/dcuevasa/unitreeG1_virtual_noetic"
+  },
+  {
+    "id": 40,
+    "title": "projects-list.mujocoSimLeRobot.title",
+    "description": "projects-list.mujocoSimLeRobot.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "https://github.com/user-attachments/assets/aaa8351c-93e6-4dfd-b276-cd3e3cd380da",
+    "tags": [
+      "LeRobot",
+      "MuJoCo",
+      "Python"
+    ],
+    "github": "https://github.com/SinfonIAUniandes/mujoco_sim_lerobot"
+  },
+  {
+    "id": 41,
+    "title": "projects-list.oasisUniandes.title",
+    "description": "projects-list.oasisUniandes.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "",
+    "tags": [
+      "TypeScript",
+      "Robotics"
+    ],
+    "github": "https://github.com/Oasis-Uniandes/oasis-uniandes"
+  },
+  {
+    "id": 42,
+    "title": "projects-list.webRemoteController.title",
+    "description": "projects-list.webRemoteController.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "",
+    "tags": [
+      "ROS",
+      "JavaScript",
+      "Robotics"
+    ],
+    "github": "https://github.com/SinfonIAUniandes/web-remote-controller"
   }
 ]
