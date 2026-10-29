@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.589d4e61.css",
-    "main.js": "/static/js/main.113e9f9d.js",
+    "main.js": "/static/js/main.1144a832.js",
     "static/js/453.abecb809.chunk.js": "/static/js/453.abecb809.chunk.js",
     "static/media/Foto-Robocup.jpg": "/static/media/Foto-Robocup.8d50cdaad6bbd8f6bf82.jpg",
     "static/media/geomagic-touch.png": "/static/media/geomagic-touch.235e0d7f3791d1ff91e6.png",
@@ -33,11 +33,11 @@
     "index.html": "/index.html",
     "static/media/fastapi.svg": "/static/media/fastapi.6c84dc4ea9626837be0ce2c5523b6d52.svg",
     "main.589d4e61.css.map": "/static/css/main.589d4e61.css.map",
-    "main.113e9f9d.js.map": "/static/js/main.113e9f9d.js.map",
+    "main.1144a832.js.map": "/static/js/main.1144a832.js.map",
     "453.abecb809.chunk.js.map": "/static/js/453.abecb809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.589d4e61.css",
-    "static/js/main.113e9f9d.js"
+    "static/js/main.1144a832.js"
   ]
 }
