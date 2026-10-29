@@ -329,6 +329,73 @@ def build_style_examples(projects, i18n_translations, max_examples=8):
     return examples
 
 
+def parse_models_response(response):
+    """
+    Parse model response robustly:
+    1. First attempts normal JSON parsing.
+    2. Falls back to parsing SSE-style data: lines.
+    3. Supports both message.content and accumulated delta.content.
+    4. Raises a clear parse error with body prefix context when payloads are unusable.
+    """
+    try:
+        data = response.json()
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+
+    text = (response.text or "").strip()
+    if not text:
+        raise ValueError("Model response body was empty.")
+
+    accumulated_content = []
+    message_content = None
+    has_sse_data = False
+
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line.startswith("data:"):
+            has_sse_data = True
+            line_data = line[5:].strip()
+            if line_data == "[DONE]":
+                continue
+            try:
+                chunk = json.loads(line_data)
+            except Exception:
+                continue
+
+            choices = chunk.get("choices") or []
+            if not choices:
+                continue
+            choice = choices[0]
+
+            msg = choice.get("message")
+            if msg and isinstance(msg, dict) and msg.get("content"):
+                message_content = msg["content"]
+
+            delta = choice.get("delta")
+            if delta and isinstance(delta, dict) and delta.get("content"):
+                accumulated_content.append(delta["content"])
+
+    if has_sse_data:
+        final_content = message_content or "".join(accumulated_content)
+        if final_content:
+            return {
+                "choices": [
+                    {
+                        "message": {
+                            "content": final_content
+                        }
+                    }
+                ]
+            }
+
+    body_prefix = text[:300].replace("\n", " ")
+    raise ValueError(f"Failed to parse model response payload. Body prefix: {body_prefix!r}")
+
+
 def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_projects=5):
     """
     Skim through all candidate repositories in a SINGLE AI call, selecting ONLY
@@ -388,47 +455,60 @@ def skim_and_curate_with_ai(candidate_repos, style_examples, existing_keys, max_
         ("https://models.github.ai/inference/chat/completions", AI_MODEL),
     ]
 
+    tokens_to_try = [MODELS_TOKEN]
+    if GITHUB_TOKEN and GITHUB_TOKEN != MODELS_TOKEN:
+        tokens_to_try.append(GITHUB_TOKEN)
+
     last_error = None
     for endpoint_url, model_name in endpoints:
-        for attempt in range(3):
-            try:
-                response = requests.post(
-                    endpoint_url,
-                    headers={
-                        "Authorization": f"Bearer {MODELS_TOKEN}",
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "model": model_name,
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": json.dumps(user_payload, ensure_ascii=False)},
-                        ],
-                        "temperature": 0.2,
-                        "response_format": {"type": "json_object"},
-                    },
-                    timeout=60,
-                )
+        for token in tokens_to_try:
+            for attempt in range(3):
+                try:
+                    response = requests.post(
+                        endpoint_url,
+                        headers={
+                            "Authorization": f"Bearer {token}",
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                        },
+                        json={
+                            "model": model_name,
+                            "messages": [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": json.dumps(user_payload, ensure_ascii=False)},
+                            ],
+                            "temperature": 0.2,
+                            "stream": False,
+                            "response_format": {"type": "json_object"},
+                        },
+                        timeout=60,
+                    )
 
-                if response.status_code == 429:
-                    wait_seconds = 8 * (attempt + 1)
-                    print(f"Rate limited (429) on {endpoint_url}. Waiting {wait_seconds}s...")
-                    time.sleep(wait_seconds)
-                    continue
+                    if response.status_code == 429:
+                        wait_seconds = 8 * (attempt + 1)
+                        print(f"Rate limited (429) on {endpoint_url}. Waiting {wait_seconds}s...")
+                        time.sleep(wait_seconds)
+                        continue
 
-                if response.status_code != 200:
-                    last_error = f"HTTP {response.status_code}: {response.text[:300]}"
-                    break
+                    if response.status_code in (401, 403) and token != tokens_to_try[-1]:
+                        print(f"Token rejected ({response.status_code}) on {endpoint_url}. Trying alternate token...")
+                        break
 
-                data = response.json()
-                content = data["choices"][0]["message"]["content"]
-                content = re.sub(r"^```(?:json)?\s*", "", content.strip())
-                content = re.sub(r"\s*```$", "", content.strip())
-                return json.loads(content)
+                    if response.status_code != 200:
+                        last_error = f"HTTP {response.status_code}: {response.text[:300]}"
+                        break
 
-            except Exception as exc:
-                last_error = str(exc)
-                time.sleep(2)
+                    data = parse_models_response(response)
+                    content = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
+                    if not content:
+                        raise ValueError("Model response did not include message content.")
+                    content = re.sub(r"^```(?:json)?\s*", "", content.strip())
+                    content = re.sub(r"\s*```$", "", content.strip())
+                    return json.loads(content)
+
+                except Exception as exc:
+                    last_error = str(exc)
+                    time.sleep(2)
 
     raise RuntimeError(f"Failed to call GitHub Models API: {last_error}")
 
