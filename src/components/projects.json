@@ -6,7 +6,11 @@
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "imgRoboCupTeam",
-    "tags": ["ROS", "Python", "Robotics"],
+    "tags": [
+      "ROS",
+      "Python",
+      "Robotics"
+    ],
     "github": "https://github.com/SinfonIAUniandes/task_utilities"
   },
   {
@@ -16,7 +20,11 @@
     "area": "robotics",
     "research_line": "embodied_agentic_ai",
     "image": "https://raw.githubusercontent.com/dcuevasa/LLM-Robot-Agents/main/architecture.png",
-    "tags": ["LLMs", "Agents", "Robotics"],
+    "tags": [
+      "LLMs",
+      "Agents",
+      "Robotics"
+    ],
     "github": "https://github.com/dcuevasa/LLM-Robot-Agents"
   },
   {
@@ -26,7 +34,11 @@
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "pepperListen",
-    "tags": ["ROS2", "NAOqi", "Robotics"],
+    "tags": [
+      "ROS2",
+      "NAOqi",
+      "Robotics"
+    ],
     "github": "https://github.com/SinfonIAUniandes/naoqi_bringup2_SinfonIA"
   },
   {
@@ -36,7 +48,11 @@
     "area": "robotics",
     "research_line": "vlas_and_acts",
     "image": "https://private-user-images.githubusercontent.com/98664178/559421475-2a032f86-1df0-4225-8dcf-8f11cb1bfc00.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc1MTMzMDEsIm5iZiI6MTc3NzUxMzAwMSwicGF0aCI6Ii85ODY2NDE3OC81NTk0MjE0NzUtMmEwMzJmODYtMWRmMC00MjI1LThkY2YtOGYxMWNiMWJmYzAwLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDMwVDAxMzY0MVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ1YjZkNzFmY2VjODE1NWRjOGU4ZTMyY2ViNjhjODE2MGY3ZTA4ZGE1ZjY3OWI1ZTdiMDVmMThhYjk1ZTk0NjMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRmdpZiJ9.C7P320X4wbJUg9PZpDGMS6SwAGU7IKfwjCLVi2uWqG8",
-    "tags": ["MuJoCo", "ACT", "VLA"],
+    "tags": [
+      "MuJoCo",
+      "ACT",
+      "VLA"
+    ],
     "github": "https://github.com/Oasis-Uniandes/lerobot_teleoperator_so101_vuer"
   },
   {
@@ -46,7 +62,12 @@
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "pepperController",
-    "tags": ["Unity 6", "OpenXR", "Meta Quest 3", "ROS"],
+    "tags": [
+      "Unity 6",
+      "OpenXR",
+      "Meta Quest 3",
+      "ROS"
+    ],
     "github": "https://github.com/Oasis-Uniandes/softbank_robots_vr_teleop"
   },
   {
@@ -56,7 +77,11 @@
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "https://www.researchgate.net/profile/Fernando-De-La-Rosa/publication/236013145/figure/fig2/AS:380488092012546@1467726838739/P3DX-mobile-robot-equipped-with-an-URG-laser-rangefinder.png",
-    "tags": ["ROS", "Python", "Robotics"],
+    "tags": [
+      "ROS",
+      "Python",
+      "Robotics"
+    ],
     "github": "https://github.com/dcuevasa/P3DX-Navigation"
   },
   {
@@ -66,7 +91,11 @@
     "area": "robotics",
     "research_line": "social_robotics",
     "image": "pepperNavigation",
-    "tags": ["ROS", "Navigation", "C++"],
+    "tags": [
+      "ROS",
+      "Navigation",
+      "C++"
+    ],
     "github": "https://github.com/SinfonIAUniandes/navigation_utilities"
   },
   {
@@ -76,7 +105,11 @@
     "area": "ai",
     "research_line": "nlp",
     "image": "NLP",
-    "tags": ["NLP", "Python", "AI"],
+    "tags": [
+      "NLP",
+      "Python",
+      "AI"
+    ],
     "github": "https://github.com/SinfonIAUniandes/speech_utilities"
   },
   {
@@ -86,7 +119,11 @@
     "area": "ai",
     "research_line": "nlp",
     "image": "serviceFinder",
-    "tags": ["NLP", "BERT", "AI"],
+    "tags": [
+      "NLP",
+      "BERT",
+      "AI"
+    ],
     "github": "https://github.com/dcuevasa/BERTraco"
   },
   {
@@ -96,7 +133,11 @@
     "area": "ai",
     "research_line": "nlp",
     "image": "https://raw.githubusercontent.com/Ai-For-Good-Bogota/presidential-rag-api/main/media/rag.png",
-    "tags": ["RAG", "LLMs", "API"],
+    "tags": [
+      "RAG",
+      "LLMs",
+      "API"
+    ],
     "github": "https://github.com/Ai-For-Good-Bogota/presidential-rag-api"
   },
   {
@@ -106,7 +147,11 @@
     "area": "ai",
     "research_line": "nlp",
     "image": "serviceFinder",
-    "tags": ["Full Stack", "Python", "AI"],
+    "tags": [
+      "Full Stack",
+      "Python",
+      "AI"
+    ],
     "github": "https://github.com/dcuevasa/serviceFinder"
   },
   {
@@ -116,7 +161,11 @@
     "area": "ai",
     "research_line": "vision",
     "image": "https://raw.githubusercontent.com/SinfonIAUniandes/vision_utilities/main/media/vision.png",
-    "tags": ["Vision", "YOLO", "AI"],
+    "tags": [
+      "Vision",
+      "YOLO",
+      "AI"
+    ],
     "github": "https://github.com/SinfonIAUniandes/vision_utilities"
   },
   {
@@ -126,7 +175,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "sustaniU",
-    "tags": ["Flutter", "AI", "Mobile"],
+    "tags": [
+      "Flutter",
+      "AI",
+      "Mobile"
+    ],
     "github": "https://github.com/ISIS3510-Team14/Flutter"
   },
   {
@@ -136,7 +189,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "freeBird",
-    "tags": ["React", "Node.js", "Full Stack"],
+    "tags": [
+      "React",
+      "Node.js",
+      "Full Stack"
+    ],
     "github": "https://github.com/dcuevasa/FreeBird-Front"
   },
   {
@@ -146,7 +203,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/SinfonIAUniandes/WeaROS2/main/media/wearos.png",
-    "tags": ["WearOS", "ROS2", "Mobile"],
+    "tags": [
+      "WearOS",
+      "ROS2",
+      "Mobile"
+    ],
     "github": "https://github.com/SinfonIAUniandes/WeaROS2"
   },
   {
@@ -156,7 +217,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/3DS-InputRedirectionClient-Android/master/media/screenshot.png",
-    "tags": ["Android", "Java", "Networking"],
+    "tags": [
+      "Android",
+      "Java",
+      "Networking"
+    ],
     "github": "https://github.com/dcuevasa/3DS-InputRedirectionClient-Android"
   },
   {
@@ -166,7 +231,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/imagine-uniandes/pasaporte-ar/main/media/ar.png",
-    "tags": ["AR", "Unity", "Mobile"],
+    "tags": [
+      "AR",
+      "Unity",
+      "Mobile"
+    ],
     "github": "https://github.com/imagine-uniandes/pasaporte-ar"
   },
   {
@@ -176,7 +245,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "freeBird",
-    "tags": ["Blog", "Research", "AI"],
+    "tags": [
+      "Blog",
+      "Research",
+      "AI"
+    ],
     "github": "https://github.com/SinfonIAUniandes/sinfonia_blog"
   },
   {
@@ -186,7 +259,10 @@
     "area": "others",
     "research_line": "simulation",
     "image": "https://raw.githubusercontent.com/ComitNetLab/Digital_Twin_ML340/main/media/digital_twin.png",
-    "tags": ["Digital Twin", "Simulation"],
+    "tags": [
+      "Digital Twin",
+      "Simulation"
+    ],
     "github": "https://github.com/ComitNetLab/Digital_Twin_ML340"
   },
   {
@@ -196,7 +272,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/3ds-Controller-touch/master/media/screenshot.png",
-    "tags": ["3DS", "Controller", "Mobile"],
+    "tags": [
+      "3DS",
+      "Controller",
+      "Mobile"
+    ],
     "github": "https://github.com/dcuevasa/3ds-Controller-touch"
   },
   {
@@ -206,7 +286,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/3DS_CodEdit/master/media/screenshot.png",
-    "tags": ["3DS", "Editor", "C++"],
+    "tags": [
+      "3DS",
+      "Editor",
+      "C++"
+    ],
     "github": "https://github.com/dcuevasa/3DS_CodEdit"
   },
   {
@@ -216,7 +300,11 @@
     "area": "ai",
     "research_line": "vision",
     "image": "https://raw.githubusercontent.com/dcuevasa/bop_toolkit_imagenes/main/media/vision.png",
-    "tags": ["Vision", "6D Pose", "AI"],
+    "tags": [
+      "Vision",
+      "6D Pose",
+      "AI"
+    ],
     "github": "https://github.com/dcuevasa/bop_toolkit_imagenes"
   },
   {
@@ -226,7 +314,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/cemuhook_motion_touchpad/master/media/screenshot.png",
-    "tags": ["CemuHook", "Motion", "Mobile"],
+    "tags": [
+      "CemuHook",
+      "Motion",
+      "Mobile"
+    ],
     "github": "https://github.com/dcuevasa/cemuhook_motion_touchpad"
   },
   {
@@ -236,7 +328,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/dsu2ps4/master/media/screenshot.png",
-    "tags": ["DSU", "PS4", "Networking"],
+    "tags": [
+      "DSU",
+      "PS4",
+      "Networking"
+    ],
     "github": "https://github.com/dcuevasa/dsu2ps4"
   },
   {
@@ -246,7 +342,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/DSUCellphoneController/master/media/screenshot.png",
-    "tags": ["DSU", "Mobile", "Android"],
+    "tags": [
+      "DSU",
+      "Mobile",
+      "Android"
+    ],
     "github": "https://github.com/dcuevasa/DSUCellphoneController"
   },
   {
@@ -256,7 +356,11 @@
     "area": "others",
     "research_line": "simulation",
     "image": "https://raw.githubusercontent.com/dcuevasa/nao_robot_noetic/main/media/nao.png",
-    "tags": ["ROS", "Gazebo", "NAO"],
+    "tags": [
+      "ROS",
+      "Gazebo",
+      "NAO"
+    ],
     "github": "https://github.com/dcuevasa/nao_robot_noetic"
   },
   {
@@ -266,7 +370,11 @@
     "area": "others",
     "research_line": "simulation",
     "image": "https://raw.githubusercontent.com/dcuevasa/pepper_robot_noetic/main/media/pepper.png",
-    "tags": ["ROS", "Gazebo", "Pepper"],
+    "tags": [
+      "ROS",
+      "Gazebo",
+      "Pepper"
+    ],
     "github": "https://github.com/dcuevasa/pepper_robot_noetic"
   },
   {
@@ -276,7 +384,11 @@
     "area": "mobile",
     "research_line": "others",
     "image": "https://raw.githubusercontent.com/dcuevasa/WearWalker/main/media/screenshot.png",
-    "tags": ["WearOS", "Robotics", "Gait Assistance"],
+    "tags": [
+      "WearOS",
+      "Robotics",
+      "Gait Assistance"
+    ],
     "github": "https://github.com/dcuevasa/WearWalker"
   },
   {
@@ -286,7 +398,11 @@
     "area": "others",
     "research_line": "simulation",
     "image": "https://raw.githubusercontent.com/imagine-uniandes/GemeloVirtualRedesVR/main/media/vr.png",
-    "tags": ["VR", "Network", "Simulation"],
+    "tags": [
+      "VR",
+      "Network",
+      "Simulation"
+    ],
     "github": "https://github.com/imagine-uniandes/GemeloVirtualRedesVR"
   },
   {
@@ -296,7 +412,11 @@
     "area": "robotics",
     "research_line": "vlas_and_acts",
     "image": "https://private-user-images.githubusercontent.com/98664178/586177441-83e4ac9d-454e-4fda-a746-84832d745ca1.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc1NzMzNjQsIm5iZiI6MTc3NzU3MzA2NCwicGF0aCI6Ii85ODY2NDE3OC81ODYxNzc0NDEtODNlNGFjOWQtNDU0ZS00ZmRhLWE3NDYtODQ4MzJkNzQ1Y2ExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDMwVDE4MTc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTliNTE2NTExYjNjZjQ0ZDdkNTc5YTdhMjY2ZTI3ZTQ0ZmQ5YmM0MmZkNWY1NzRkODZkZWZhZjkxNTNmZTU0ZjMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.HRWASV6q_xzj5hHjype_p_rIuxP4H9wDBuXKJiGmc2E",
-    "tags": ["LeRobot", "IK", "Robotics"],
+    "tags": [
+      "LeRobot",
+      "IK",
+      "Robotics"
+    ],
     "github": "https://github.com/SinfonIAUniandes/lerobot_teleoperator_so101_ik"
   },
   {
@@ -306,7 +426,11 @@
     "area": "robotics",
     "research_line": "vlas_and_acts",
     "image": "geomagicTouch",
-    "tags": ["LeRobot", "Haptic", "Robotics"],
+    "tags": [
+      "LeRobot",
+      "Haptic",
+      "Robotics"
+    ],
     "github": "https://github.com/SinfonIAUniandes/lerobot_teleoperator_so101_haptic"
   },
   {
@@ -316,7 +440,80 @@
     "area": "robotics",
     "research_line": "vlas_and_acts",
     "image": "https://private-user-images.githubusercontent.com/98664178/586135765-b2bf4ec5-41b2-4842-ad56-2086041771c4.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc1NzMzNjQsIm5iZiI6MTc3NzU3MzA2NCwicGF0aCI6Ii85ODY2NDE3OC81ODYxMzU3NjUtYjJiZjRlYzUtNDFiMi00ODQyLWFkNTYtMjA4NjA0MTc3MWM0LmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDMwVDE4MTc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU4YmQ3NDU5ZDNlMGQ2NmE3NDQ2NDg1YjQwOTk5ODkyMDg3ZTFjMzAyYWQ3NzQ0ZmJlMzUzNzYxNTBhYzYyMGUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRmdpZiJ9.UMTdnxuWYp-r0ijNtcN21apwV2LMdFPGyzVe6aQqork",
-    "tags": ["LeRobot", "MuJoCo", "Robotics"],
+    "tags": [
+      "LeRobot",
+      "MuJoCo",
+      "Robotics"
+    ],
     "github": "https://github.com/SinfonIAUniandes/lerobot_robot_so101_mujoco"
+  },
+  {
+    "id": 33,
+    "title": "projects-list.colivridigitaltwin.title",
+    "description": "projects-list.colivridigitaltwin.description",
+    "area": "robotics",
+    "research_line": "social_robotics",
+    "image": "https://raw.githubusercontent.com/imagine-uniandes/ColivriDigitalTwin/main/Images/UpperCamelCaseExample.jpg",
+    "tags": [
+      "C#",
+      "Robotics"
+    ],
+    "github": "https://github.com/imagine-uniandes/ColivriDigitalTwin"
+  },
+  {
+    "id": 34,
+    "title": "projects-list.jros2CellphoneInterface.title",
+    "description": "projects-list.jros2CellphoneInterface.description",
+    "area": "robotics",
+    "research_line": "social_robotics",
+    "image": "https://img.youtube.com/vi/skNQdbO8yrw/maxresdefault.jpg",
+    "tags": [
+      "ROS2",
+      "ROS",
+      "Android"
+    ],
+    "github": "https://github.com/SinfonIAUniandes/jros2_cellphone_interface"
+  },
+  {
+    "id": 35,
+    "title": "projects-list.speechUtilities2.title",
+    "description": "projects-list.speechUtilities2.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "",
+    "tags": [
+      "ROS2",
+      "ROS",
+      "LLMs"
+    ],
+    "github": "https://github.com/SinfonIAUniandes/speech_utilities2"
+  },
+  {
+    "id": 36,
+    "title": "projects-list.lerobotVisionDetector.title",
+    "description": "projects-list.lerobotVisionDetector.description",
+    "area": "robotics",
+    "research_line": "vlas_and_acts",
+    "image": "",
+    "tags": [
+      "LeRobot",
+      "ROS",
+      "Vision"
+    ],
+    "github": "https://github.com/dcuevasa/lerobot-vision-detector"
+  },
+  {
+    "id": 37,
+    "title": "projects-list.3dsinputredirectionandroid.title",
+    "description": "projects-list.3dsinputredirectionandroid.description",
+    "area": "robotics",
+    "research_line": "social_robotics",
+    "image": "https://github.com/user-attachments/assets/75fad0dd-6a71-40cd-94c5-2d9c5dfd1a8c",
+    "tags": [
+      "ROS",
+      "Android",
+      "Kotlin"
+    ],
+    "github": "https://github.com/dcuevasa/3dsInputRedirectionAndroid"
   }
 ]

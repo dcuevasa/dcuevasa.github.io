@@ -309,6 +309,26 @@ i18n
               description:
                 "Computer vision and sensor fusion tools for robot environment understanding",
             },
+            colivridigitaltwin: {
+              title: "Colivridigitaltwin",
+              description: "Unity project that aims to create a digital replica of the Colivri laboratory at Uniandes",
+            },
+            jros2CellphoneInterface: {
+              title: "Jros2 Cellphone Interface",
+              description: "Android (Jetpack Compose) application that exports live phone sensor telemetry to ROS 2 using standard `sensor_msgs`, `std_msgs` message",
+            },
+            speechUtilities2: {
+              title: "Speech Utilities2",
+              description: "This is ROS2 Package implements various tools for speech processing",
+            },
+            lerobotVisionDetector: {
+              title: "LeRobot Vision Detector",
+              description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
+            },
+            3dsinputredirectionandroid: {
+              title: "3dsinputredirectionandroid",
+              description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
+            },
             others: {
               title: "Other Projects",
               description: "Miscellaneous web, mobile, and tool projects",
@@ -629,6 +649,26 @@ i18n
               title: "Utilidades de Percepción",
               description:
                 "Herramientas de visión artificial y fusión de sensores para la comprensión del entorno robótico",
+            },
+            colivridigitaltwin: {
+              title: "Colivridigitaltwin",
+              description: "Unity project that aims to create a digital replica of the Colivri laboratory at Uniandes",
+            },
+            jros2CellphoneInterface: {
+              title: "Jros2 Cellphone Interface",
+              description: "Android (Jetpack Compose) application that exports live phone sensor telemetry to ROS 2 using standard `sensor_msgs`, `std_msgs` message",
+            },
+            speechUtilities2: {
+              title: "Speech Utilities2",
+              description: "This is ROS2 Package implements various tools for speech processing",
+            },
+            lerobotVisionDetector: {
+              title: "LeRobot Vision Detector",
+              description: "Computer vision tools for LeRobot: detect and annotate target objects with bounding boxes or segmentation masks across offline datasets",
+            },
+            3dsinputredirectionandroid: {
+              title: "3dsinputredirectionandroid",
+              description: "This is an Android Kotlin Project that allows you to control your Hacked 3DS from your Phone with Luma InputRedirection",
             },
             others: {
               title: "Otros Proyectos",
